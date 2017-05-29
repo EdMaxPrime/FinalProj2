@@ -1,5 +1,5 @@
 public class Ray {
-  float startX, startY;
+  double startX, startY;
   double originalMagnitude;
   PVector vector;
   
@@ -8,6 +8,16 @@ public class Ray {
     startY = y2;
     vector = new PVector(x2 - x1, y2 - y1);
     originalMagnitude = vector.mag();
+  }
+  
+  /** The length of this ray from its vertex */
+  double magnitude() {
+    return vector.mag();
+  }
+  
+  /** The length of this ray if it began at the camera plane */
+  double planeMagnitude() {
+    return vector.mag() - originalMagnitude;
   }
   
   String toString() {
