@@ -1,5 +1,5 @@
 public class Ray {
-  int stepX, stepY;
+  int stepX, stepY, mapX, mapY;
   double startX, startY;
   double originalMagnitude;
   double deltaDistX, deltaDistY, initDistX, initDistY;
@@ -9,6 +9,8 @@ public class Ray {
   Ray(float x1, float y1, float x2, float y2) {
     startX = x1;
     startY = y2;
+    mapX = (int)startX;
+    mapY = (int)startY;
     vector = new PVector(x2 - x1, y2 - y1);
     originalMagnitude = vector.mag();
     onGrid = false;
