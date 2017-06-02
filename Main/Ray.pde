@@ -4,7 +4,7 @@ public class Ray {
   double originalMagnitude;
   double deltaDistX, deltaDistY, initDistX, initDistY;
   PVector vector;
-  boolean onGrid;
+  boolean onGrid, sideHit;
   
   Ray(float x1, float y1, float x2, float y2) {
     startX = x1;
@@ -12,6 +12,7 @@ public class Ray {
     vector = new PVector(x2 - x1, y2 - y1);
     originalMagnitude = vector.mag();
     onGrid = false;
+    sideHit = false; //false=NorthSouth // true=EastWest
     calculateDistances();
   }
   
