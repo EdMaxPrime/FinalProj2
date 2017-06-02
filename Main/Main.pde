@@ -10,7 +10,10 @@ void setup() {
   println(r);
   int x0 = 3, y0 = 3, x1 = 8, y1 = 16;
 
-  
+  Camera cam = new Camera(0, 0, 0, 10); //@origin facing left, 10 rays
+  while(cam.hasNextRay()) {
+    println("!!"+cam.nextRay());
+  }
 }
 
 void draw() {
