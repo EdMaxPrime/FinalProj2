@@ -42,11 +42,15 @@ public class Ray {
     if(initDistX < initDistY) {
       initDistX += deltaDistX;
       //mapX += stepX
+      mapX += stepX;
       //side = east/west
+      side = true;
     } else {
       initDistY += deltaDistY;
       //mapY += setpY
+      mapY += stepY;
       //side = north/south
+      side = false;
     }
     //now safe to check if a wall was hit
   }
