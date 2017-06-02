@@ -70,8 +70,8 @@ public class Ray {
   float getPosY() {return vector.y + (float)startY;}
   
   /** Returns the integer coordinates of this ray tip */
-  int getMapX() {return (int)getPosX();}
-  int getMapY() {return (int)getPosY();}
+  int getMapX() {return mapX;}
+  int getMapY() {return mapY;}
   
   String toString() {
     return "<" + vector.x + "," + vector.y + ">";
