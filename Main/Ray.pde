@@ -44,13 +44,13 @@ public class Ray {
       //mapX += stepX
       mapX += stepX;
       //side = east/west
-      side = true;
+      sideHit = true;
     } else {
       initDistY += deltaDistY;
       //mapY += setpY
       mapY += stepY;
       //side = north/south
-      side = false;
+      sideHit = false;
     }
     //now safe to check if a wall was hit
   }
@@ -75,5 +75,9 @@ public class Ray {
   
   String toString() {
     return "<" + vector.x + "," + vector.y + ">";
+  }
+  
+  String where() {
+    return "("+mapX+"  "+mapY+")";
   }
 }
