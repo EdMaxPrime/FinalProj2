@@ -6,10 +6,10 @@ public class Camera{
   int resolution; //at most = WIDTH, controls how many rays we need to generate
   int current; //which ray we are doing right now
   
-  public Camera(float x, float y, PVector dir, int res) {
+  public Camera(float x, float y, double angle, int res) {
     xpos = x;
     ypos = y;
-    direction = dir;
+    direction = PVector.fromAngle((float)angle);
     resolution = res;
     current = 0;
     planeLength = 0.66;
