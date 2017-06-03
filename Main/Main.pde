@@ -19,19 +19,16 @@ void setup() {
   Camera cam = new Camera(0, 0, 0, 10); //@origin facing right, 10 rays
   Ray r2 = cam.nextRay();
   println("Ray: " + r);
-  int gray = 255;
-  fill(gray);
+  fill(255);
   ellipseMode(CENTER);
   ellipse(240, 240, 5, 5);
-  gray -= 20;
-  fill(gray);
   ellipse(240+r2.getPosX()*40, 240-r2.getPosY()*40, 5, 5);
+  text("Dir", 250+r2.getPosX()*40, 250-r2.getPosY()*40);
   for(int i = 0; i < 5; i++) {
     r2.grow();
     println(i+") "+r2.where());
-    gray -= 20;
-    fill(gray);
     ellipse(240+r2.getMapX()*40, 240-r2.getMapY()*40, 5, 5);
+    text(i+"", 250+r2.getMapX()*40, 250-r2.getMapY()*40);
   }
 }
 
