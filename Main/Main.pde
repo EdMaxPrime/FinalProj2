@@ -18,10 +18,11 @@ void setup() {
   }
   Camera cam = new Camera(0, 0, 0, 10); //@origin facing right, 10 rays
   Ray r2 = cam.nextRay();
-  println("Ray: " + r);
+  println("Ray: " + r2);
   fill(255);
   ellipseMode(CENTER);
   ellipse(240, 240, 5, 5);
+  println("Pos: "+r2.getPosX() + ", " + r2.getPosY() + ", " + r2.startY);
   ellipse(240+r2.getPosX()*40, 240-r2.getPosY()*40, 5, 5);
   text("Dir", 250+r2.getPosX()*40, 250-r2.getPosY()*40);
   for(int i = 0; i < 5; i++) {
@@ -34,4 +35,8 @@ void setup() {
 
 void draw() {
   //background(0,0,0);
+}
+
+void drawRay(int scale, Ray r) {
+
 }
