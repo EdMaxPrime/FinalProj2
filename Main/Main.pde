@@ -15,6 +15,7 @@ void setup() {
   Ray r2 = cam.nextRay();
   drawGrid(40);
   drawRay(40, r2);
+  println(r2.perpWallDist());
 }
 
 void draw() {
