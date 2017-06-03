@@ -73,6 +73,15 @@ public class Ray {
   int getMapX() {return mapX;}
   int getMapY() {return mapY;}
   
+  /** Returns the perpendicular distance from the camera plane
+      to wherever the ray hit a wall to avoid the fish-eye effect.*/
+  double perpWallDist() {
+    if(!sideHit) //hit east-west side
+      return (mapX - startX + (1 - stepX) / 2) / vector.x;
+    else         //hit north-south side
+      return (mapY - startY + (1 - stepY) / 2) / vector.y; 
+  }
+  
   String toString() {
     return "<" + vector.x + "," + vector.y + ">";
   }
