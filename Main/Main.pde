@@ -1,3 +1,5 @@
+Camera cam;
+
 void setup() {
   size(500, 500);
   Ray r = new Ray(0, 0, -.5, 1);
@@ -9,20 +11,23 @@ void setup() {
   r.grow();
   println(r);
   int x0 = 3, y0 = 3, x1 = 8, y1 = 16;
-  
-  background(0);
-  stroke(255, 0, 0);
-  for(int line = 0; line < max(width, height)/15.0; line++) {
-    line(line*40, 0, line*40, height); //vertical
-    line(0, line*40, width, line*40); //horizontal
-  }
-  Camera cam = new Camera(0, 0, 0, 10); //@origin facing right, 10 rays
+  cam = new Camera(0, 0, 0, 10); //@origin facing right, 10 rays
   Ray r2 = cam.nextRay();
+  drawGrid(40);
   drawRay(40, r2);
 }
 
 void draw() {
   //background(0,0,0);
+}
+
+void drawGrid(float scale) {
+  background(0);
+  stroke(255, 0, 0);
+  for(int line = 0; line < max(width, height)/scale; line++) {
+    line(line*scale, 0, line*scale, height); //vertical
+    line(0, line*scale, width, line*scale); //horizontal
+  }
 }
 
 void drawRay(int scale, Ray r) {
@@ -45,5 +50,12 @@ void drawRay(int scale, Ray r) {
     line(240+x*scale, 240-y*scale, 240+(x+r.vector.x)*scale, 240-(y+r.vector.y)*scale);
     x += r.vector.x;
     y += r.vector.y;
+  }
+}
+
+void keyReleased() {
+  if(cam.hasNextRay()) {
+    drawGrid(40);
+    drawRay(40, cam.nextRay());
   }
 }
