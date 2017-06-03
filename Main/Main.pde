@@ -18,19 +18,7 @@ void setup() {
   }
   Camera cam = new Camera(0, 0, 0, 10); //@origin facing right, 10 rays
   Ray r2 = cam.nextRay();
-  println("Ray: " + r2);
-  fill(255);
-  ellipseMode(CENTER);
-  ellipse(240, 240, 5, 5);
-  println("Pos: "+r2.getPosX() + ", " + r2.getPosY() + ", " + r2.startY);
-  ellipse(240+r2.getPosX()*40, 240-r2.getPosY()*40, 5, 5);
-  text("Dir", 250+r2.getPosX()*40, 250-r2.getPosY()*40);
-  for(int i = 0; i < 5; i++) {
-    r2.grow();
-    println(i+") "+r2.where());
-    ellipse(240+r2.getMapX()*40, 240-r2.getMapY()*40, 5, 5);
-    text(i+"", 250+r2.getMapX()*40, 250-r2.getMapY()*40);
-  }
+  drawRay(40, r2);
 }
 
 void draw() {
@@ -38,5 +26,24 @@ void draw() {
 }
 
 void drawRay(int scale, Ray r) {
-
+  println("Ray: " + r);
+  fill(255);
+  ellipseMode(CENTER);
+  ellipse(240, 240, 5, 5);
+  println("Pos: "+r.getPosX() + ", " + r.getPosY() + ", " + r.startY);
+  ellipse(240+r.getPosX()*scale, 240-r.getPosY()*scale, 5, 5);
+  text("Dir", 250+r.getPosX()*scale, 250-r.getPosY()*scale);
+  for(int i = 0; i < 5; i++) {
+    r.grow();
+    println(i+") "+r.where());
+    ellipse(240+r.getMapX()*scale, 240-r.getMapY()*scale, 5, 5);
+    text(i+"", 250+r.getMapX()*scale, 250-r.getMapY()*scale);
+  }
+  stroke(0, 0, 255);
+  float x = (float)r.startX, y = (float)r.startY;
+  for(int step = 0; step < max(width, height)/(2*scale); step++) {
+    line(240+x*scale, 240-y*scale, 240+(x+r.vector.x)*scale, 240-(y+r.vector.y)*scale);
+    x += r.vector.x;
+    y += r.vector.y;
+  }
 }
