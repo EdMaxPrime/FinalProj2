@@ -42,10 +42,10 @@ void drawRay(int scale, Ray r) {
   for(int i = 0; i < 5; i++) {
     r.grow();
     println(i+") "+r.where());
-    ellipse(240+r.getMapX()*scale, 240-r.getMapY()*scale, 5, 5);
-    text(i+"", 250+r.getMapX()*scale, 250-r.getMapY()*scale);
+    ellipse(240+r.getMapX()*scale + scale/2, 240-r.getMapY()*scale - scale/2, 5, 5);
+    text(i+"", 250+r.getMapX()*scale + scale/2, 250-r.getMapY()*scale - scale/2);
   }
-  stroke(0, 0, 255);
+  stroke(150, 150, 255);
   float x = (float)r.startX, y = (float)r.startY;
   for(int step = 0; step < max(width, height)/(2*scale); step++) {
     line(240+x*scale, 240-y*scale, 240+(x+r.vector.x)*scale, 240-(y+r.vector.y)*scale);
