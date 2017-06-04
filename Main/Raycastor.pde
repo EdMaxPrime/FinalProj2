@@ -4,9 +4,9 @@ public class RayCastor {
   
   public RayCastor(Camera c) {
     world = new FakeWorld(new int[][] {
-      {0, 0, 1, 1},
-      {0, 0, 1, 1},
-      {1, 1, 1, 1},
+      {0, 1, 0, 0},
+      {0, 1, 0, 1},
+      {0, 1, 1, 1},
       {1, 1, 1, 1}
     });
     camera = c;
@@ -19,6 +19,10 @@ public class RayCastor {
       for(int i = 0; i < 10; i ++) {
         if(world.whatsThere(r.getMapX(), r.getMapY()) != 0) {
           println("Detected @(" + r.getMapX() + ", " + r.getMapY() + ") " + r.perpWallDist());
+          PVector end = r.vector.copy();
+          end.setMag((float)r.perpWallDist()); //looks like fish-eye
+          stroke(128, 255, 128);
+          line(240, 240, 240 + end.x*40, 240 - end.y*40);
           break;
         } else {
           r.grow();
