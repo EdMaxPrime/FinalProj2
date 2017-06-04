@@ -3,7 +3,7 @@ RayCastor rc;
 
 void setup() {
   size(500, 500);
-  Ray r = new Ray(0, 0, -.5, 1);
+  /*Ray r = new Ray(0, 0, -.5, 1);
   println(r);
   r.grow();
   println(r);
@@ -16,8 +16,9 @@ void setup() {
   Ray r2 = cam.nextRay();
   drawGrid(40);
   drawRay(40, r2);
-  println(r2.perpWallDist());
+  println(r2.perpWallDist());*/
   rc = new RayCastor(new Camera(0, 0, 0, 100));
+  rc.camera.rotate(HALF_PI);
   rc.beginCasting();
 }
 
@@ -30,6 +31,12 @@ void draw() {
       image(buffer[i].getStripe(-1), i*5+j, height/2);
     }
   }
+  if(frameCount % 720 < 360) {
+    rc.camera.rotate(- PI/720);
+  } else {
+    rc.camera.rotate(+ PI/720);
+  }
+  rc.beginCasting();
 }
 
 void drawGrid(float scale) {
