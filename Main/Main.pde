@@ -28,7 +28,7 @@ void draw() {
   imageMode(CENTER);
   for(int i = 0; i < buffer.length; i++) {
     for(int j = 0; j < height/buffer.length; j++) {
-      image(buffer[i].getStripe(-1), i*5+j, height/2);
+      image(buffer[i].getStripe(-1), i*(height/buffer.length)+j, height/2);
     }
   }
   if(frameCount % 720 < 360) {
