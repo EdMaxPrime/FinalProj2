@@ -35,6 +35,7 @@ public class RayCastor {
         }
       }
       stripes[rayNumber] = world.getTexture(r.getMapX(), r.getMapY(), r.perpWallDist());
+      if(r.sideHit) stripes[rayNumber].darker(); //if it hit an east-west side, make it shaded
       rayNumber++;
     }
   }
