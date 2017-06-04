@@ -1,5 +1,6 @@
 Camera cam;
 RayCastor rc;
+Renderer render;
 
 void setup() {
   size(500, 500);
@@ -20,17 +21,19 @@ void setup() {
   rc = new RayCastor(new Camera(0, 0, 0, 100));
   rc.camera.rotate(HALF_PI);
   rc.beginCasting();
+  render = new Renderer(rc);
 }
 
 void draw() {
-  background(0,0,0);
-  Texture[] buffer = rc.getBuffer();
-  imageMode(CENTER);
-  for(int i = 0; i < buffer.length; i++) {
-    for(int j = 0; j < height/buffer.length; j++) {
-      image(buffer[i].getStripe(-1), i*(height/buffer.length)+j, height/2);
-    }
-  }
+  //background(0,0,0);
+  //PImage[] buffer = rc.getBuffer();
+  //imageMode(CENTER);
+  //for(int i = 0; i < buffer.length; i++) {
+  //  for(int j = 0; j < height/buffer.length; j++) {
+  //    image(buffer[i], i*(height/buffer.length)+j, height/2);
+  //  }
+  //}
+  render.render();
   if(frameCount % 720 < 360) {
     rc.camera.rotate(- PI/720);
   } else {
@@ -38,7 +41,7 @@ void draw() {
   }
   rc.beginCasting();
 }
-
+//
 void drawGrid(float scale) {
   background(0);
   stroke(255, 0, 0);
