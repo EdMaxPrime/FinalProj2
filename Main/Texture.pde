@@ -1,25 +1,23 @@
 abstract class Texture {
   int txtWidth, txtHeight;
-  double distance;
   
   /** Returns a vertical stripe */
-  abstract PImage getStripe(float where);
+  abstract PImage getStripe(float where, double distance);
   /** Make the texture darker to simulate shading */
   abstract void darker();
   /** How far away this texture is from the camera */
-  public float distance() {return (float)distance;}
 }
 
 public class OneColor extends Texture {
   color mycolor;
-  public OneColor(color c, double d) {
+  public OneColor(color c) {
     mycolor = c;
     txtWidth = 16;
     txtHeight = 16;
-    distance = (d <= 0)? .001 : d; //cant be negative or zero
   }
   
-  public PImage getStripe(float where) {
+  public PImage getStripe(float where, double distance) {
+    distance = (distance <= 0)? .001 : distance; //cant be negative or zero
     PImage img = createImage(1, (int)(height / distance), RGB);
     img.loadPixels();
     for(int i = 0; i < img.pixels.length; i++) {
