@@ -16,13 +16,14 @@ void setup() {
   drawGrid(40);
   drawRay(40, r2);
   println(r2.perpWallDist());
-  RayCastor rc = new RayCastor(new Camera(0, 0, 0, 10));
-  rc.camera.rotate(HALF_PI);
+  RayCastor rc = new RayCastor(new Camera(0, 0, 0, 100));
+  rc.camera.rotate(PI/4);
   rc.beginCasting();
 }
 
 void draw() {
   //background(0,0,0);
+  
 }
 
 void drawGrid(float scale) {
