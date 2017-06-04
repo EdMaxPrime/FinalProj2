@@ -1,4 +1,5 @@
 Camera cam;
+RayCastor rc;
 
 void setup() {
   size(500, 500);
@@ -16,14 +17,19 @@ void setup() {
   drawGrid(40);
   drawRay(40, r2);
   println(r2.perpWallDist());
-  RayCastor rc = new RayCastor(new Camera(0, 0, 0, 100));
-  rc.camera.rotate(PI/4);
+  rc = new RayCastor(new Camera(0, 0, 0, 100));
   rc.beginCasting();
 }
 
 void draw() {
-  //background(0,0,0);
-  
+  background(0,0,0);
+  Texture[] buffer = rc.getBuffer();
+  imageMode(CENTER);
+  for(int i = 0; i < buffer.length; i++) {
+    for(int j = 0; j < height/buffer.length; j++) {
+      image(buffer[i].getStripe(-1), i*5+j, height/2);
+    }
+  }
 }
 
 void drawGrid(float scale) {
