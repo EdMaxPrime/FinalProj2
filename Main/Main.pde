@@ -17,6 +17,7 @@ void setup() {
   drawRay(40, r2);
   println(r2.perpWallDist());
   RayCastor rc = new RayCastor(new Camera(0, 0, 0, 10));
+  rc.camera.rotate(HALF_PI);
   rc.beginCasting();
 }
 

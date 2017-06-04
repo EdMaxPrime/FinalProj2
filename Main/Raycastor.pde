@@ -6,7 +6,7 @@ public class RayCastor {
     world = new FakeWorld(new int[][] {
       {0, 1, 0, 0},
       {0, 1, 0, 1},
-      {0, 1, 1, 1},
+      {1, 1, 1, 1},
       {1, 1, 1, 1}
     });
     camera = c;
