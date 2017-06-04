@@ -14,7 +14,7 @@ public class OneColor extends Texture {
     mycolor = c;
     txtWidth = 16;
     txtHeight = 16;
-    distance = (d <= 0)? d : .001; //cant be negative or zero
+    distance = (d <= 0)? .001 : d; //cant be negative or zero
   }
   
   public PImage getStripe(float where) {
