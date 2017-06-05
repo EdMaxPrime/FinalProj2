@@ -39,7 +39,7 @@ public class RayCastor {
         }
       }
       if (s == null) s = new Solid(1,1,2,new OneColor(color(0)));
-      stripes[rayNumber] = s.getStripe(-1, r.perpWallDist());
+      stripes[rayNumber] = s.getStripe(-1, r.perpWallDist(), true);
       //if(r.sideHit) stripes[rayNumber].darker(); //if it hit an east-west side, make it shaded
       
       rayNumber++;

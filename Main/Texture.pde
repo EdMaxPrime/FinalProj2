@@ -4,8 +4,10 @@ abstract class Texture {
   /** Returns a vertical stripe */
   abstract PImage getStripe(float where, double distance);
   /** Make the texture darker to simulate shading */
-  abstract void darker();
+  abstract Texture darker();
   /** How far away this texture is from the camera */
+  /** Returns a copy */
+  abstract Texture copy();
 }
 
 public class OneColor extends Texture {
@@ -27,9 +29,15 @@ public class OneColor extends Texture {
     return img;
   }
   
-  public void darker() {
+  public OneColor darker() {
     colorMode(HSB, 360, 100, 100);
     mycolor = color(hue(mycolor), saturation(mycolor), brightness(mycolor)/2);
     colorMode(RGB, 255, 255, 255);
+    return this;
+  }
+  
+  public OneColor copy() {
+    OneColor t = new OneColor(mycolor);
+    return t;
   }
 }

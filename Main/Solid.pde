@@ -17,7 +17,8 @@ public class Solid{
     }
   }
   
-  public PImage getStripe(float where, double distance){
+  public PImage getStripe(float where, double distance, boolean dark){
+    if(dark) return texture.copy().darker().getStripe(where, distance);
     return texture.getStripe(where, distance);
   }
   
