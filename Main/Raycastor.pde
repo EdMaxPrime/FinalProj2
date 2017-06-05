@@ -38,6 +38,7 @@ public class RayCastor {
           break;
         }
       }
+      float where; //should replace the -1, find tut for wallX
       if (s == null) s = new Solid(1,1,2,new OneColor(color(0)));
       stripes[rayNumber] = s.getStripe(-1, r.perpWallDist(), r.sideHit); //if it hit an east-west side, make it shaded
       rayNumber++;
