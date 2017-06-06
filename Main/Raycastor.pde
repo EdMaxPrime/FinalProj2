@@ -7,7 +7,7 @@ public class RayCastor {
   ArrayList<Solid> solids = new ArrayList<Solid>();
   
   public RayCastor(Camera c) {
-    solids.add(new Solid(1, 1, 3, new OneColor(color(255))));
+    solids.add(new Solid(1, 1, 3, new ImageTexture(loadImage("data/bricks.png"))));
     world = new World(solids, 5, 5);
     camera = c;
     stripes = new PImage[camera.resolution];
@@ -38,9 +38,11 @@ public class RayCastor {
           break;
         }
       }
-      float where; //should replace the -1, find tut for wallX
-      if (s == null) s = new Solid(1,1,2,new OneColor(color(0)));
-      stripes[rayNumber] = s.getStripe(-1, r.perpWallDist(), r.sideHit); //if it hit an east-west side, make it shaded
+      double where;
+      if(r.sideHit == true) where = r.startX + r.perpWallDist() * r.vector.y; //east-west (side = 0)
+      else                  where = r.startX + r.perpWallDist() * r.vector.x; //north-south (side = 1)
+      if (s == null) s = new Solid(1,1,2,new OneColor(color(0))); //default black cube
+      stripes[rayNumber] = s.getStripe((float)where, r.perpWallDist(), r.sideHit); //if it hit an east-west side, make it shaded
       rayNumber++;
     }
   }
