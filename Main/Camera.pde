@@ -15,7 +15,24 @@ public class Camera{
     planeLength = 0.66;
   }
   
-
+  public void Mforward(){
+    xpos++;
+  }
+  
+  public void Mbackward(){
+    ypos++;
+  }
+  
+  public void Mright(){  
+     PVector xAxis = new PVector(0,2);
+     float a = PVector.angleBetween(direction, xAxis);
+     
+  }
+  
+  public void Mleft(){
+    
+    
+  
   public void rotate(float angle){
     direction.rotate(angle);
   }
