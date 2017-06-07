@@ -80,14 +80,12 @@ void keyReleased() {
     drawRay(40, cam.nextRay());
   }
   if (keyCode == UP) {
-      fillVal = 255;
+      println("up");
   } else if (keyCode == DOWN) {
-      fillVal = 0;
-  }
+      println("down");
   } else if (keyCode == RIGHT) {
-      fillVal = 0;
-  }
+      println("right");
   } else if (keyCode == LEFT) {
-      fillVal = 0;
+     println("left");
   }
 }

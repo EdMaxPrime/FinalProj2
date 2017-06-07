@@ -31,6 +31,7 @@ public class Camera{
   
   public void Mleft(){
     
+  }
     
   
   public void rotate(float angle){
