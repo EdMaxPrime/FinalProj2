@@ -76,7 +76,15 @@ class ImageTexture extends Texture {
   }
   /** Make the texture darker to simulate shading */
   Texture darker() {
-    return this;
+    PImage darkened = img.copy();
+    colorMode(HSB, 360, 100, 100);
+    darkened.loadPixels();
+    for(int i = 0; i < darkened.pixels.length; i++) {
+      darkened.pixels[i] = color(hue(darkened.pixels[i]), saturation(darkened.pixels[i]), brightness(darkened.pixels[i])/2);
+    }
+    darkened.updatePixels();
+    colorMode(RGB);
+    return new ImageTexture(darkened);
   }
   /** Returns a copy */
   Texture copy() {
