@@ -53,13 +53,14 @@ class ImageTexture extends Texture {
   /** Returns a vertical stripe */
   PImage getStripe(float where, double distance) {
     distance = (distance <= 0)? .001 : distance; //cant be negative or zero
+    if(where > 1.0) where -= floor(where);
     PImage stripe = createImage(1, (int)(height / distance), RGB);
     int xCoord = (int)(img.width * where);
     stripe.loadPixels();
     for(int i = 0; i < stripe.pixels.length; i++) {
       int yCoord = i * 256 - height * 128 + stripe.pixels.length * 128;
-      //stripe.pixels[i] = img.get(xCoord, ((yCoord * txtHeight) / stripe.pixels.length) / 256);
-      stripe.pixels[i] = color(255); //works, maybe image isnt loading?
+      stripe.pixels[i] = img.get(xCoord, ((yCoord * txtHeight) / stripe.pixels.length) / 256);
+      //stripe.pixels[i] = color(255); //works, maybe image isnt loading?
     }
     stripe.updatePixels();
     return stripe;
