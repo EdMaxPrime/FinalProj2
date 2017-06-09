@@ -58,12 +58,21 @@ class ImageTexture extends Texture {
     int xCoord = (int)(img.width * where);
     stripe.loadPixels();
     for(int i = 0; i < stripe.pixels.length; i++) {
-      int yCoord = i * 256 - height * 128 + stripe.pixels.length * 128;
-      stripe.pixels[i] = img.get(xCoord, ((yCoord * txtHeight) / stripe.pixels.length) / 256);
-      //stripe.pixels[i] = color(255); //works, maybe image isnt loading?
+      //int yCoord = i * 256 - height * 128 + stripe.pixels.length * 128;
+      //stripe.pixels[i] = img.get(xCoord, ((yCoord * txtHeight) / stripe.pixels.length) / 256);
+      stripe.pixels[i] = scaledTexel(xCoord, i, ((float)txtHeight) / stripe.height);
     }
     stripe.updatePixels();
     return stripe;
+  }
+  /** Resize image by scaling coordinates to get colors from the original image */
+  private color scaledTexel(int xCoord, int scaledYCoord, float howMany) {
+    if(howMany < 1) {
+      return img.get(xCoord, round(scaledYCoord * howMany));
+    } else {
+      //somehow average colors together
+    }
+    return color(255);
   }
   /** Make the texture darker to simulate shading */
   Texture darker() {
