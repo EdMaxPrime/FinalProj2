@@ -45,7 +45,7 @@ public class OneColor extends Texture {
 }
 
 class ImageTexture extends Texture {
-  PImage img;
+  PImage img, dark;
   color avgColor;
   
   public ImageTexture(PImage _img) {
@@ -53,10 +53,21 @@ class ImageTexture extends Texture {
     txtWidth = img.width;
     txtHeight = img.height;
     img.loadPixels();
-    computeAverageColor();
+    computeDarker();
   }
   
-  /** Returns a vertical stripe */
+  private ImageTexture(PImage normal, PImage darkened) {
+    img = normal;
+    dark = darkened;
+    txtWidth = img.width;
+    txtHeight = img.height;
+    img.loadPixels();
+    dark.loadPixels();
+  }
+  
+  /** Returns a vertical stripe located at a certain x coordinate,
+      distance determines the height of the returned image, where
+      is a float from 0 to 1 that represents the x coordinate */
   PImage getStripe(float where, double distance) {
     distance = (distance <= 0)? .001 : distance; //cant be negative or zero
     if(where > 1.0) where -= floor(where);
@@ -106,19 +117,23 @@ class ImageTexture extends Texture {
     avgColor = color(r / l, g / l, b / l, a / l);
   }
   /** Make the texture darker to simulate shading */
-  Texture darker() {
+  private void computeDarker() {
+    dark = createImage(txtWidth, txtHeight, ARGB);
     colorMode(HSB, 360, 100, 100, 255);
-    img.loadPixels();
     for(int i = 0; i < img.pixels.length; i++) {
-      img.pixels[i] = color(hue(img.pixels[i]), saturation(img.pixels[i]), brightness(img.pixels[i])/2, alpha(img.pixels[i]));
+      dark.pixels[i] = color(hue(img.pixels[i]), saturation(img.pixels[i]), brightness(img.pixels[i])/2, alpha(img.pixels[i]));
     }
-    img.updatePixels();
+    dark.updatePixels();
     colorMode(RGB);
-    computeAverageColor();
+  }
+  public Texture darker() {
+    PImage temp = img;
+    img = dark;
+    dark = temp;
     return this;
   }
   /** Returns a copy */
   Texture copy() {
-    return new ImageTexture(img.copy());
+    return new ImageTexture(img, dark);
   }
 }
