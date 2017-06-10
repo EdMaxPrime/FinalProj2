@@ -63,8 +63,16 @@ class ImageTexture extends Texture {
     PImage stripe = createImage(1, (int)(height / distance), RGB);
     int xCoord = (int)(img.width * where);
     stripe.loadPixels(); //to edit the pixels of the image we return
-    for(int i = 0; i < stripe.pixels.length; i++) {
-      stripe.pixels[i] = scaledTexel(xCoord, i, ((float)txtHeight) / stripe.height);
+    int correctionValue = 0; //sometimes texY is shifted down into negatives, this makes sure it isnt
+    for(int y = 0; y < stripe.pixels.length; y++) {
+      if(txtHeight < stripe.height) {
+        stripe.pixels[y] = scaledTexel(xCoord, y, ((float)txtHeight) / stripe.height);
+      } else {
+        int convert = y * 256 - height * 128 + stripe.height * 128;
+        int texY = ((convert * txtHeight) / stripe.height) / 256;
+        if(y == 0) correctionValue = abs(texY);
+        stripe.pixels[y] = img.pixels[(texY + correctionValue) * txtWidth + xCoord];
+      }
     }
     stripe.updatePixels();
     return stripe;
