@@ -41,8 +41,10 @@ public class RayCastor {
       double where;
       if(r.sideHit == true) where = r.startX + r.perpWallDist() * r.vector.y; //east-west (side = 0)
       else                  where = r.startX + r.perpWallDist() * r.vector.x; //north-south (side = 1)
-      if (s == null) s = new Solid(1,1,2,new OneColor(color(0))); //default black cube
-      stripes[rayNumber] = s.getStripe((float)where, r.perpWallDist(), r.sideHit); //if it hit an east-west side, make it shaded
+      if (s == null) {
+        stripes[rayNumber] = null;
+      } else
+        stripes[rayNumber] = s.getStripe((float)where, r.perpWallDist(), r.sideHit); //if it hit an east-west side, make it shaded
       rayNumber++;
     }
   }
