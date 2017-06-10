@@ -32,9 +32,9 @@ public class OneColor extends Texture {
   }
   
   public OneColor darker() {
-    colorMode(HSB, 360, 100, 100);
-    mycolor = color(hue(mycolor), saturation(mycolor), brightness(mycolor)/2);
-    colorMode(RGB, 255, 255, 255);
+    colorMode(HSB, 360, 100, 100, 255);
+    mycolor = color(hue(mycolor), saturation(mycolor), brightness(mycolor)/2, alpha(mycolor));
+    colorMode(RGB, 255, 255, 255, 255);
     return this;
   }
   
@@ -106,10 +106,10 @@ class ImageTexture extends Texture {
   }
   /** Make the texture darker to simulate shading */
   Texture darker() {
-    colorMode(HSB, 360, 100, 100);
+    colorMode(HSB, 360, 100, 100, 255);
     img.loadPixels();
     for(int i = 0; i < img.pixels.length; i++) {
-      img.pixels[i] = color(hue(img.pixels[i]), saturation(img.pixels[i]), brightness(img.pixels[i])/2);
+      img.pixels[i] = color(hue(img.pixels[i]), saturation(img.pixels[i]), brightness(img.pixels[i])/2, alpha(img.pixels[i]));
     }
     img.updatePixels();
     colorMode(RGB);

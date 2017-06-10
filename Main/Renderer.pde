@@ -7,6 +7,9 @@ public class Renderer{
   
   public void render(){
     background(0,0,0);
+    fill(#82CAFF);
+    rectMode(CORNERS);
+    rect(0, 0, width, height/2);
     PImage[] buffer = rc.getBuffer();
     imageMode(CENTER);
     for(int i = 0; i < buffer.length; i++) {
