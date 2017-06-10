@@ -1,7 +1,7 @@
 abstract class Texture {
   int txtWidth, txtHeight;
   
-  /** Returns a vertical stripe */
+  /** Returns a vertical stripe, to scale depending on distance */
   abstract PImage getStripe(float where, double distance);
   /** Make the texture darker to simulate shading */
   abstract Texture darker();
@@ -9,6 +9,7 @@ abstract class Texture {
   abstract Texture copy();
 }
 
+/** The simplest kind of Texture, used for monochrome blocks */
 public class OneColor extends Texture {
   color mycolor;
   public OneColor(color c) {
@@ -17,6 +18,8 @@ public class OneColor extends Texture {
     txtHeight = 16;
   }
   
+  /** The only relevant parameter is DISTANCE because that's used for foreshortening. Since this is 
+      all one color, the location where the ray hit the block isn't important*/
   public PImage getStripe(float where, double distance) {
     distance = (distance <= 0)? .001 : distance; //cant be negative or zero
     PImage img = createImage(1, (int)(height / distance), RGB);
@@ -43,11 +46,14 @@ public class OneColor extends Texture {
 
 class ImageTexture extends Texture {
   PImage img;
+  color avgColor;
   
   public ImageTexture(PImage _img) {
     img = _img;
     txtWidth = img.width;
     txtHeight = img.height;
+    img.loadPixels();
+    computeAverageColor();
   }
   
   /** Returns a vertical stripe */
@@ -56,38 +62,54 @@ class ImageTexture extends Texture {
     if(where > 1.0) where -= floor(where);
     PImage stripe = createImage(1, (int)(height / distance), RGB);
     int xCoord = (int)(img.width * where);
-    stripe.loadPixels();
+    stripe.loadPixels(); //to edit the pixels of the image we return
     for(int i = 0; i < stripe.pixels.length; i++) {
-      //int yCoord = i * 256 - height * 128 + stripe.pixels.length * 128;
-      //stripe.pixels[i] = img.get(xCoord, ((yCoord * txtHeight) / stripe.pixels.length) / 256);
       stripe.pixels[i] = scaledTexel(xCoord, i, ((float)txtHeight) / stripe.height);
     }
     stripe.updatePixels();
     return stripe;
   }
-  /** Resize image by scaling coordinates to get colors from the original image */
+  /** Returns the appropriate color to use given the X coord
+      of the texture and the Y coord of the new scaled texture;
+      howMany is a ratio that will be replaced soon, right now
+      it just tells us if we should try to do math or just give
+      up because the scaled texture is too small and use the avgColor */
   private color scaledTexel(int xCoord, int scaledYCoord, float howMany) {
     if(howMany < 1) {
-      return img.get(xCoord, round(scaledYCoord * howMany));
+      return img.pixels[xCoord + txtWidth * floor(scaledYCoord * howMany)];
     } else {
-      //somehow average colors together
+      return avgColor;
     }
-    return color(255);
+  }
+  
+  /** Computes the average color of this picture, will
+      be used when the dimensions of this texture get
+      too small */
+  void computeAverageColor() {
+    int r = 0, g = 0, b = 0, a = 0;
+    for(color c : img.pixels) {
+      r += red(c);
+      g += green(c);
+      b += blue(c);
+      a += alpha(c);
+    }
+    int l = img.pixels.length;
+    avgColor = color(r / l, g / l, b / l, a / l);
   }
   /** Make the texture darker to simulate shading */
   Texture darker() {
-    PImage darkened = img.copy();
     colorMode(HSB, 360, 100, 100);
-    darkened.loadPixels();
-    for(int i = 0; i < darkened.pixels.length; i++) {
-      darkened.pixels[i] = color(hue(darkened.pixels[i]), saturation(darkened.pixels[i]), brightness(darkened.pixels[i])/2);
+    img.loadPixels();
+    for(int i = 0; i < img.pixels.length; i++) {
+      img.pixels[i] = color(hue(img.pixels[i]), saturation(img.pixels[i]), brightness(img.pixels[i])/2);
     }
-    darkened.updatePixels();
+    img.updatePixels();
     colorMode(RGB);
-    return new ImageTexture(darkened);
+    computeAverageColor();
+    return this;
   }
   /** Returns a copy */
   Texture copy() {
-    return this;
+    return new ImageTexture(img.copy());
   }
 }
