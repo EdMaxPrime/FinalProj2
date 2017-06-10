@@ -6,7 +6,7 @@ public class Player{
   
   public Player(Renderer r) {
     cam = r.rc.camera;
-    speed = 0.4;
+    speed = 0.1;
   }
   
   public void forward(){
@@ -21,6 +21,7 @@ public class Player{
     println(cam.xpos, cam.ypos);
   }
   
+  /** -1 to turn left, +1 to turn right */
   public void turn(int dir) {
     if(dir == -1) cam.rotate(- PI/90);
     if(dir ==  1) cam.rotate(+ PI/90);

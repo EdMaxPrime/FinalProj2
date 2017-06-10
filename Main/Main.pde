@@ -83,15 +83,23 @@ void keyReleased() {
   }*/
   if (keyCode == UP) {
       println("up");
-      p.forward();
   } else if (keyCode == DOWN) {
       println("down");
-      p.backward();
   } else if (keyCode == RIGHT) {
       println("right");
-      p.turn(1);
   } else if (keyCode == LEFT) {
      println("left");
-     p.turn(-1);
+  }
+}
+
+void keyPressed() {
+  if(keyCode == UP) {
+    p.forward();
+  } else if(keyCode == DOWN) {
+    p.backward();
+  } else if(keyCode == LEFT) {
+    p.turn(-1);
+  } else if(keyCode == RIGHT) {
+    p.turn(1);
   }
 }
