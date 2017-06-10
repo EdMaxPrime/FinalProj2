@@ -6,7 +6,7 @@ public class Renderer{
   }
   
   public void render(){
-    background(0,0,0);
+    background(#764D0D);
     fill(#82CAFF);
     rectMode(CORNERS);
     rect(0, 0, width, height/2);
