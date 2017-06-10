@@ -9,7 +9,7 @@ public class RayCastor {
   
   public RayCastor(Camera c) {
     solids.add(new Solid(1, 1, 3, new ImageTexture(loadImage("data/bricks.png"))));
-    solids.add(new Solid(1, 2, 3, new ImageTexture(loadImage("data/stonebrick.png"))));
+    solids.add(new Solid(1, 2, 3, new Beacon(new ImageTexture(loadImage("data/stonebrick.png")), color(255,0,255))));
     world = new World(solids, 5, 5);
     camera = c;
     stripes = new PImage[camera.resolution];
