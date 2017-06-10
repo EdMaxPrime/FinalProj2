@@ -54,6 +54,7 @@ class ImageTexture extends Texture {
     txtHeight = img.height;
     img.loadPixels();
     computeDarker();
+    dark.loadPixels();
   }
   
   private ImageTexture(PImage normal, PImage darkened) {
