@@ -84,7 +84,8 @@ class ImageTexture extends Texture {
       up because the scaled texture is too small and use the avgColor */
   private color scaledTexel(int xCoord, int scaledYCoord, float howMany) {
     if(howMany < 1) {
-      return img.pixels[xCoord + txtWidth * floor(scaledYCoord * howMany)];
+      int index = xCoord + txtWidth * floor(scaledYCoord * howMany);
+      return img.pixels[max(0, min(index, img.pixels.length-1))];
     } else {
       return avgColor;
     }

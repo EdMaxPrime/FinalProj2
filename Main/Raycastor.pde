@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class RayCastor {
   World world;
   Camera camera;
+  int renderDistance; //how far away you can see
   PImage[] stripes;
   ArrayList<Solid> solids = new ArrayList<Solid>();
   
@@ -11,6 +12,7 @@ public class RayCastor {
     world = new World(solids, 5, 5);
     camera = c;
     stripes = new PImage[camera.resolution];
+    renderDistance = 10;
   }
   
   public void beginCasting() {
@@ -20,7 +22,7 @@ public class RayCastor {
     Solid s = null;
     while(camera.hasNextRay()) {
       Ray r = camera.nextRay();
-      for(int i = 0; i < 10; i ++) {
+      for(int i = 0; i < renderDistance; i ++) {
         //if(world.whatsThere(r.getMapX(), r.getMapY()) != 0) {
         //  //println("Detected @(" + r.getMapX() + ", " + r.getMapY() + ") " + r.perpWallDist());
         //  PVector end = r.vector.copy();
@@ -32,10 +34,10 @@ public class RayCastor {
         s = world.whatsThere(r.getMapX(), r.getMapY());
         
         if (s == null){
-          r.grow();
+          r.grow(); //nothing there, keep going
         }
         else{
-          break;
+          break; //we hit something
         }
       }
       double where;
@@ -52,6 +54,9 @@ public class RayCastor {
   public PImage[] getBuffer() {
     return stripes;
   }
+  
+  void setRenderDistance(int d) {renderDistance = d;}
+  int getRenderDistance() {return renderDistance;}
 }
 
 //public class FakeWorld {

@@ -1,6 +1,7 @@
 Camera cam;
 RayCastor rc;
 Renderer render;
+Player p;
 
 void setup() {
   size(500, 500);
@@ -22,6 +23,7 @@ void setup() {
   rc.camera.rotate(HALF_PI);
   rc.beginCasting();
   render = new Renderer(rc);
+  p = new Player(render);
 }
 
 void draw() {
@@ -75,17 +77,21 @@ void drawRay(int scale, Ray r) {
 }
 
 void keyReleased() {
-  if(cam.hasNextRay()) {
+  /*if(cam.hasNextRay()) {
     drawGrid(40);
     drawRay(40, cam.nextRay());
-  }
+  }*/
   if (keyCode == UP) {
       println("up");
+      p.forward();
   } else if (keyCode == DOWN) {
       println("down");
+      p.backward();
   } else if (keyCode == RIGHT) {
       println("right");
+      p.turn(1);
   } else if (keyCode == LEFT) {
      println("left");
+     p.turn(-1);
   }
 }
