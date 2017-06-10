@@ -18,7 +18,7 @@ void setup() {
   drawGrid(40);
   drawRay(40, r2);
   println(r2.perpWallDist());*/
-  rc = new RayCastor(new Camera(0, 0, 0, 100));
+  rc = new RayCastor(new Camera(0, 0, -radians(45), 100));
   rc.camera.rotate(HALF_PI);
   rc.beginCasting();
   render = new Renderer(rc);
@@ -34,11 +34,11 @@ void draw() {
   //  }
   //}
   render.render();
-  if(frameCount % 720 < 360) {
-    rc.camera.rotate(- PI/720);
-  } else {
-    rc.camera.rotate(+ PI/720);
-  }
+  //if(frameCount % 720 < 360) { //number of times draw has been called
+  //  rc.camera.rotate(- PI/720);
+  //} else {
+  //  rc.camera.rotate(+ PI/720);
+  //}
   rc.beginCasting();
 }
 //
@@ -78,5 +78,14 @@ void keyReleased() {
   if(cam.hasNextRay()) {
     drawGrid(40);
     drawRay(40, cam.nextRay());
+  }
+  if (keyCode == UP) {
+      println("up");
+  } else if (keyCode == DOWN) {
+      println("down");
+  } else if (keyCode == RIGHT) {
+      println("right");
+  } else if (keyCode == LEFT) {
+     println("left");
   }
 }
