@@ -12,6 +12,7 @@ public class RayCastor {
     solids.add(new Solid(3, 1, 3, new Beacon(new ImageTexture(loadImage("data/stonebrick.png")), color(255, 0, 255))));
     solids.add(new Door(2, 1, 3, new ImageTexture(loadImage("data/bookshelf.png"))));
     world = new World(solids, 5, 5);
+    world = new World(join(loadStrings("data/world1.txt"), "\n"));
     camera = c;
     stripes = new PImage[camera.resolution];
     renderDistance = 10;

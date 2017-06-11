@@ -96,8 +96,12 @@ void keyReleased() {
 
 void keyPressed() {
   if(keyCode == UP) {
+    p.forward();
   } else if(keyCode == DOWN) {
+    p.backward();
   } else if(keyCode == LEFT) {
+    p.turn(-1);
   } else if(keyCode == RIGHT) {
+    p.turn(1);
   }
 }
