@@ -1,3 +1,5 @@
+public static final float minDistance = 0.5;
+
 abstract class Texture {
   int txtWidth, txtHeight;
 
@@ -25,7 +27,7 @@ public class OneColor extends Texture {
   /** The only relevant parameter is DISTANCE because that's used for foreshortening. Since this is 
    all one color, the location where the ray hit the block isn't important*/
   public PImage getStripe(float where, double distance) {
-    distance = (distance <= 0)? .001 : distance; //cant be negative or zero
+    distance = (distance <= 0)? minDistance : distance; //cant be negative or zero
     PImage img = createImage(1, (int)(height / distance), ARGB);
     img.loadPixels();
     for (int i = 0; i < img.pixels.length; i++) {
@@ -74,7 +76,7 @@ class ImageTexture extends Texture {
    distance determines the height of the returned image, where
    is a float from 0 to 1 that represents the x coordinate */
   PImage getStripe(float where, double distance) {
-    distance = (distance <= 0)? .001 : distance; //cant be negative or zero
+    distance = (distance <= 0)? minDistance : distance; //cant be negative or zero
     if (where > 1.0) where -= floor(where);
     PImage stripe = createImage(1, (int)(height / distance), ARGB);
     int xCoord = (int)(img.width * where);
