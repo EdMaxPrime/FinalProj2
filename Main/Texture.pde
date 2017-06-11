@@ -162,7 +162,6 @@ public class Beacon extends Texture {
     int padding = (height - sideStripe.height)/2;
     PImage stripe = createImage(1, height, ARGB);
     stripe.loadPixels();
-    if(frameCount == 2) println(sideStripe.height, stripe.height, padding);
     for (int i = 0; i < stripe.height; i++) {
       if (i < padding) {
         stripe.pixels[i] = changeAlpha(light, round(i*255/padding)); //beacon light on top

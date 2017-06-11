@@ -89,17 +89,15 @@ void keyReleased() {
       println("right");
   } else if (keyCode == LEFT) {
      println("left");
+  } else if (key == ' ') {
+    ((Door)render.rc.world.whatsThere(2, 1)).toggle();
   }
 }
 
 void keyPressed() {
   if(keyCode == UP) {
-    p.forward();
   } else if(keyCode == DOWN) {
-    p.backward();
   } else if(keyCode == LEFT) {
-    p.turn(-1);
   } else if(keyCode == RIGHT) {
-    p.turn(1);
   }
 }
