@@ -14,7 +14,18 @@ public class Solid{
       ypos = y;
       sideLength = side;
       texture = text;
+      opacity = 1;
     }
+  }
+  
+  public Solid(int x, int y, double o, Texture tex) {
+    if(x < 0 || y < 0)
+      throw new IllegalArgumentException("you cannot use negative coordinates");
+    xpos = x;
+    ypos = y;
+    sideLength = 3;
+    texture = tex;
+    opacity = o;
   }
   
   public PImage getStripe(float where, double distance, boolean dark){

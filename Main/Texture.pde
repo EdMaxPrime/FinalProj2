@@ -26,7 +26,7 @@ public class OneColor extends Texture {
    all one color, the location where the ray hit the block isn't important*/
   public PImage getStripe(float where, double distance) {
     distance = (distance <= 0)? .001 : distance; //cant be negative or zero
-    PImage img = createImage(1, (int)(height / distance), RGB);
+    PImage img = createImage(1, (int)(height / distance), ARGB);
     img.loadPixels();
     for (int i = 0; i < img.pixels.length; i++) {
       img.pixels[i] = mycolor;
@@ -76,7 +76,7 @@ class ImageTexture extends Texture {
   PImage getStripe(float where, double distance) {
     distance = (distance <= 0)? .001 : distance; //cant be negative or zero
     if (where > 1.0) where -= floor(where);
-    PImage stripe = createImage(1, (int)(height / distance), RGB);
+    PImage stripe = createImage(1, (int)(height / distance), ARGB);
     int xCoord = (int)(img.width * where);
     stripe.loadPixels(); //to edit the pixels of the image we return
     int correctionValue = 0; //sometimes texY is shifted down into negatives, this makes sure it isnt
