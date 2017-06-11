@@ -10,7 +10,7 @@ public class RayCastor {
   public RayCastor(Camera c) {
     solids.add(new Solid(1, 1, 3, new ImageTexture(loadImage("data/bricks.png"))));
     solids.add(new Solid(3, 1, 3, new Beacon(new ImageTexture(loadImage("data/stonebrick.png")), color(255, 0, 255))));
-    solids.add(new Solid(2, 1, 0.5, new OneColor(color(0, 255, 0))));
+    solids.add(new Solid(2, 1, 0.5, new OneColor(color(0, 255, 0, 100))));
     world = new World(solids, 5, 5);
     camera = c;
     stripes = new PImage[camera.resolution];
@@ -79,9 +79,20 @@ public class RayCastor {
     if (r.sideHit == true) where = r.startX + r.perpWallDist() * r.vector.y; //east-west (side = 0)
     else                   where = r.startX + r.perpWallDist() * r.vector.x; //north-south (side = 1)
     if (stripes[index] != null) {
-      compose(stripes[index], s.getStripe((float)where, r.perpWallDist(), r.sideHit));
+      PImage overlay = s.getStripe((float)where, r.perpWallDist(), r.sideHit); //the opaque image
+      overlay.mask(createAlphaMask(255 - (int)alpha(stripes[index].get(0,0)), overlay.height)); //allows us to blend colors
+      compose(stripes[index], overlay);
     } else
       stripes[index] = s.getStripe((float)where, r.perpWallDist(), r.sideHit); //if it hit an east-west side, make it shaded
+  }
+  
+  /** Used for the mask() function, which accepts an array
+      filled with alpha values 0...255 the length should be
+      the number of pixels in the image this will be applied to */
+  private int[] createAlphaMask(int a, int length) {
+    int[] array = new int[length];
+    for(int i = 0; i < array.length; i++) array[i] = a;
+    return array;
   }
 }
 
