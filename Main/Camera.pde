@@ -26,11 +26,9 @@ public class Camera{
   public void Mright(){  
      PVector xAxis = new PVector(0,2);
      float a = PVector.angleBetween(direction, xAxis);
-     
   }
   
   public void Mleft(){
-    
   }
     
   
