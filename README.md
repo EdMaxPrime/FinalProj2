@@ -5,7 +5,7 @@ Cynthia Cheng and Max Zlontinsky Period 10
 APCS FINAL PROJECT
 
 Instructions:
-Run the processing file Main.pde 
+Run the processing file Main.pde from Player branch
 Use the up/down/right/left arrow keys to naigate yourself through maze
 Enjoy! 
 
