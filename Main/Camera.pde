@@ -15,7 +15,23 @@ public class Camera{
     planeLength = 0.66;
   }
   
-
+  public void Mforward(){
+    xpos++;
+  }
+  
+  public void Mbackward(){
+    ypos++;
+  }
+  
+  public void Mright(){  
+     PVector xAxis = new PVector(0,2);
+     float a = PVector.angleBetween(direction, xAxis);
+  }
+  
+  public void Mleft(){
+  }
+    
+  
   public void rotate(float angle){
     direction.rotate(angle);
   }
@@ -36,7 +52,7 @@ public class Camera{
     float cameraPlaneX = 2 * current / (float)resolution - 1;
     PVector cameraPlane = direction.copy().rotate(HALF_PI);
     cameraPlane.setMag(planeLength);
-    Ray ray = new Ray(xpos, ypos, direction.x + cameraPlane.x * cameraPlaneX, direction.y + cameraPlane.y * cameraPlaneX);
+    Ray ray = new Ray(xpos, ypos, xpos + direction.x + cameraPlane.x * cameraPlaneX, ypos + direction.y + cameraPlane.y * cameraPlaneX);
     current++;
     return ray;
   }

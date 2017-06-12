@@ -1,6 +1,7 @@
 Camera cam;
 RayCastor rc;
 Renderer render;
+Player p;
 
 void setup() {
   size(500, 500);
@@ -18,10 +19,11 @@ void setup() {
   drawGrid(40);
   drawRay(40, r2);
   println(r2.perpWallDist());*/
-  rc = new RayCastor(new Camera(0, 0, 0, 100));
+  rc = new RayCastor(new Camera(0, 0, -radians(45), 100));
   rc.camera.rotate(HALF_PI);
   rc.beginCasting();
   render = new Renderer(rc);
+  p = new Player(render);
 }
 
 void draw() {
@@ -34,11 +36,11 @@ void draw() {
   //  }
   //}
   render.render();
-  if(frameCount % 720 < 360) {
-    rc.camera.rotate(- PI/720);
-  } else {
-    rc.camera.rotate(+ PI/720);
-  }
+  //if(frameCount % 720 < 360) { //number of times draw has been called
+  //  rc.camera.rotate(- PI/720);
+  //} else {
+  //  rc.camera.rotate(+ PI/720);
+  //}
   rc.beginCasting();
 }
 //
@@ -75,8 +77,34 @@ void drawRay(int scale, Ray r) {
 }
 
 void keyReleased() {
-  if(cam.hasNextRay()) {
+  /*if(cam.hasNextRay()) {
     drawGrid(40);
     drawRay(40, cam.nextRay());
+  }*/
+  if (keyCode == UP) {
+      println("up");
+  } else if (keyCode == DOWN) {
+      println("down");
+  } else if (keyCode == RIGHT) {
+      println("right");
+  } else if (keyCode == LEFT) {
+     println("left");
+  }
+  else if (key == ' ') {
+  //  ((Door)render.rc.world.whatsThere(2, 1)).toggle();
+    Solid entrance = render.rc.world.whatsThere(2, 1);
+    if(entrance != null && entrance instanceof Door) ((Door)entrance).toggle();
+  }
+}
+
+void keyPressed() {
+  if(keyCode == UP) {
+    p.forward();
+  } else if(keyCode == DOWN) {
+    p.backward();
+  } else if(keyCode == LEFT) {
+    p.turn(-1);
+  } else if(keyCode == RIGHT) {
+    p.turn(1);
   }
 }
