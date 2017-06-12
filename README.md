@@ -10,8 +10,9 @@ Use the up/down/right/left arrow keys to naigate yourself through maze
 Enjoy! 
 
 Working Features:
-Can walk through maze
-using projecting vectors to create 3D images 
+Can walk through maze using projecting vectors to create 3D images 
+Solid objects have images printed on them
+World takes input from a file
 
 BUGS:
 player can go through walls/cannot get doors to open 
