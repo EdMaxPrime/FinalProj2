@@ -89,9 +89,10 @@ void keyReleased() {
       println("right");
   } else if (keyCode == LEFT) {
      println("left");
-  } else if (key == ' ') {
-    ((Door)render.rc.world.whatsThere(2, 1)).toggle();
   }
+  //} else if (key == ' ') {
+  //  ((Door)render.rc.world.whatsThere(2, 1)).toggle();
+  //}
 }
 
 void keyPressed() {
