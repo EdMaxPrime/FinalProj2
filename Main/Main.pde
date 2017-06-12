@@ -90,9 +90,11 @@ void keyReleased() {
   } else if (keyCode == LEFT) {
      println("left");
   }
-  //} else if (key == ' ') {
+  else if (key == ' ') {
   //  ((Door)render.rc.world.whatsThere(2, 1)).toggle();
-  //}
+    Solid entrance = render.rc.world.whatsThere(2, 1);
+    if(entrance != null && entrance instanceof Door) ((Door)entrance).toggle();
+  }
 }
 
 void keyPressed() {

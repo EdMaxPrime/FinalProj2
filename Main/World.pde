@@ -36,9 +36,9 @@ public class World {
     while (s.hasNextLine()) {
       char[] chars = s.nextLine().toCharArray();
       for (char c : chars) {
-        println(x, y);
         if (c == '#') addSolid(new Solid(x, y, 3, textures[4]));
-        else if (c == 'D') addSolid(new Solid(x, y, 3, textures[3]));
+        else if (c == 'D') {addSolid(new Door(x, y, 3, textures[3]));}
+        else if (c == 'B') addSolid(new Solid(x, y, 3, textures[2]));
         else if (c >= 'A' && c <= 'Z') addSolid(new Solid(x, y, 3, textures[0]));
         x++;
       }

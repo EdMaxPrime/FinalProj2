@@ -14,13 +14,13 @@ public class Player {
   public void forward() {
     cam.xpos += cam.direction.x * speed;
     cam.ypos += cam.direction.y * speed;
-    println(cam.xpos, cam.ypos);
+    //println(cam.xpos, cam.ypos);
   }
 
   public void backward() {
     cam.xpos -= cam.direction.x * speed;
     cam.ypos -= cam.direction.y * speed;
-    println(cam.xpos, cam.ypos);
+    //println(cam.xpos, cam.ypos);
   }
 
   /** -1 to turn left, +1 to turn right */
