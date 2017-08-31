@@ -114,11 +114,74 @@ public class SaveFile {
             break loop;
           }
           break;
-        case 1: //expecting world metadata
+        case 1: //expecting world metadata 
           break;
       }
     }
     in.close();
     println("end of file");
+  }
+  
+  /** Returns what the parameter "thing" is representing.
+    Can be a 6digit mixed-case hexadecimal "color,"
+    Or a positive integer "i-coordinate,"
+    Or a positive decimal "f-coordinate,"
+    Or a whole number "whole,"
+    Or a negative "integer" or "float,"
+    Or a comma-separated "list"
+    Otherwise, it returns "string."
+  */
+  private String typeof(String thing) {
+    if(thing.length() == 6) {
+      try {int i = Integer.parseInt(thing, 16); return "color";}
+      catch(Exception e) {}
+    }
+    else if(thing.contains(",")) {
+      return "list";
+    }
+    else {
+      try {
+        int i = Integer.parseInt(thing);
+        if(i > 0) return "i-coordinate";
+        else if(i >= 0) return "whole";
+        return "integer";
+      } catch(Exception e) {
+        float f;
+        try {f = (float)Double.parseDouble(thing);}
+        catch(Exception ee) {return "string";}
+        if(f > 0) return "f-coordinate";
+        else if(f >= 0) return "whole";
+        return "float";
+      }
+    }
+    return "string";
+  }
+  public float getNumber(String[] array, int index, float Default) {
+    if(index < array.length) {
+      try {return (float)Double.parseDouble(array[index]);}
+      catch(Exception e) {return Default;}
+    }
+    return Default;
+  }
+  public float getCoordinate(String[] array, int index, float Default) {
+    float f = getNumber(array, index, Default);
+    if(f >= 0) return f;
+    return Default;
+  }
+  public int getDimension(String[] array, int index, int Default) {
+    int i = (int)getNumber(array, index, Default);
+    if(i > 0) return i;
+    return Default;
+  }
+  public color getColor(String[] array, int index, String Default) {
+    if(Default.length() < 8) Default = "FF" + Default;
+    if(index < array.length) {
+      if(array[index].length() == 6) array[index] = "FF" + array[index];
+      if(array[index].length() == 8) {
+        try {return Integer.parseInt(array[index], 16);}
+        catch(Exception e) {}
+      }
+    }
+    return Integer.parseInt(Default, 16);
   }
 }
