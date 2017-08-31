@@ -115,6 +115,17 @@ public class SaveFile {
           }
           break;
         case 1: //expecting world metadata 
+          if(line.length() > 0 && !line.startsWith("\t")) {
+            String[] args = line.trim().split(" ");
+            worldWidth = getDimension(args, 0, 1);
+            worldHeight = getDimension(args, 1, 1);
+            sky = getColor(args, 2, "82CAFF");
+            ground = getColor(args, 3, "764D0D");
+            println(worldWidth, worldHeight, sky, ground);
+            state = 2;
+          }
+          break;
+        case 2: //expecting player position
           break;
       }
     }
@@ -175,6 +186,7 @@ public class SaveFile {
   }
   public color getColor(String[] array, int index, String Default) {
     if(Default.length() < 8) Default = "FF" + Default;
+    println(Default);
     if(index < array.length) {
       if(array[index].length() == 6) array[index] = "FF" + array[index];
       if(array[index].length() == 8) {
@@ -182,6 +194,7 @@ public class SaveFile {
         catch(Exception e) {}
       }
     }
-    return Integer.parseInt(Default, 16);
+    return 0;
+    //return Integer.parseInt(Default, 16);
   }
 }
