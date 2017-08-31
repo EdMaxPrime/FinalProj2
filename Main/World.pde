@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
 
 public class World {
   private Solid[][] world;
@@ -82,5 +83,42 @@ public class World {
       ans += "] \n";
     }
     return ans + "]";
+  }
+}
+
+public class SaveFile {
+  int worldWidth, worldHeight;
+  float playerX, playerY;
+  color sky, ground;
+  
+  SaveFile(File file) {
+    try {parse(new Scanner(file));}
+    catch(Exception e) {parse(new Scanner(""));}
+  }
+  SaveFile(String file) {
+    parse(new Scanner(file));
+  }
+  
+  private void parse(Scanner in) {
+    int state = 0;
+    loop: while(in.hasNext()) {
+      String line = in.nextLine();
+      switch(state) {
+        case 0: //expecting version number
+          if(line.equals("==")) {
+            System.out.println("Version 2 Save File");
+            state = 1;
+          }
+          else {
+            System.out.println("Invalid Save File, must start with ==");
+            break loop;
+          }
+          break;
+        case 1: //expecting world metadata
+          break;
+      }
+    }
+    in.close();
+    println("end of file");
   }
 }

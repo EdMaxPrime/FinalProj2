@@ -24,6 +24,7 @@ void setup() {
   rc.beginCasting();
   render = new Renderer(rc);
   p = new Player(render);
+  SaveFile sf = new SaveFile(join(loadStrings("data/world2.txt"), "\n"));
 }
 
 void draw() {
