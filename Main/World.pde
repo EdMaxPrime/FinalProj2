@@ -172,7 +172,7 @@ public class SaveFile {
           if(data[i] == START_SECTION) state = 3;
           break;
         case 3:
-          if(data[i] >= 32) { //ignore control characters and newlines
+          if(data[i] >= 32 && y < worldHeight) { //ignore control characters/newlines AND stay within the bounds of world
             if((char)data[i] == 'g') {
               terrain.add(new Solid(x, y, 3, textures[0]));
             }
@@ -253,5 +253,25 @@ public class SaveFile {
     }
     return 0;
     //return Integer.parseInt(Default, 16);
+  }
+  
+  World loadWorld() {
+    try {
+      return new World(terrain, worldWidth, worldHeight);
+    } catch(IllegalArgumentException e) {
+      println(e.getMessage());
+      return new World(0, 0);
+    }
+  }
+  
+  /** Returns a Renderer object containing all the necessary components. The world will be
+      as it was specified in the save file. The Player's start coordinates will be configured
+      too. Default resolution is 100 and Player will be facing the world at 45deg */
+  Renderer load() {
+    Camera camera = new Camera(playerX, playerY, radians(45), 100);
+    World world = loadWorld();
+    RayCastor raycastor = new RayCastor(camera, world);
+    Renderer renderer = new Renderer(raycastor);
+    return renderer;
   }
 }
