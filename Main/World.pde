@@ -98,6 +98,14 @@ public class SaveFile {
   SaveFile(String file) {
     parse(new Scanner(file));
   }
+  SaveFile(byte[] bytes) {
+    if(bytes == null) bytes = new byte[0];
+    int[] data = new int[bytes.length];
+    for(int i = 0; i < bytes.length; i++) {
+      data[i] = bytes[i] & 0xff;
+      print(data[i] + " ");
+    }
+  }
   
   private void parse(Scanner in) {
     int state = 0;
