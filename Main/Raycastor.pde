@@ -66,6 +66,17 @@ public class RayCastor {
       rayNumber++;
     }
   }
+  
+  public Solid lookingAt() {
+    Ray r = camera.centerRay();
+    Solid s = null;
+    for(int i = 0; i < renderDistance; i++) {
+      s = world.whatsThere(r.getMapX(), r.getMapY());
+      if(s == null) r.grow(); //nothing there
+      else break; //hit something
+    }
+    return s;
+  }
 
   public PImage[] getBuffer() {
     return stripes;
