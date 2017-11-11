@@ -153,7 +153,11 @@ public class SaveFile {
     int state = 0; //0: transition, 1: metadata, 2: transition, 3: sky colors, 4: transition, 5: world data
     int x = 1, y = 1;
     Texture[] textures = {
-      new OneColor(color(0, 128, 0))
+      new OneColor(color(64, 64, 0)),
+      new ImageTexture(loadImage("data/bookshelf.png")),
+      new OneColor(color(130, 15, 90)),
+      new OneColor(color(90, 50, 130)),
+      new ImageTexture(loadImage("data/bricks.png"))
     };
     for(int i = 3; i < data.length; i++) {
       switch(state) {
@@ -180,9 +184,11 @@ public class SaveFile {
           break;
         case 5:
           if(data[i] >= 32 && y < worldHeight) { //ignore control characters/newlines AND stay within the bounds of world
-            if((char)data[i] == 'g') {
-              terrain.add(new Solid(x, y, 3, textures[0]));
-            }
+            if((char)data[i] == 'g') { terrain.add(new Solid(x, y, 3, textures[0])); }
+            else if((char)data[i] == 'd') { terrain.add(new Door(x, y, 3, textures[1])); }
+            else if((char)data[i] == 'p') { terrain.add(new Solid(x, y, 3, textures[2])); }
+            else if((char)data[i] == 'b') { terrain.add(new Solid(x, y, 3, textures[3])); }
+            else if((char)data[i] == '#') { terrain.add(new Solid(x, y, 3, textures[4])); }
             x++;
             if(x >= worldWidth) {x = 1; y++;}
           }
