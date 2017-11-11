@@ -80,7 +80,7 @@ void keyReleased() {
      println("left");
   }
   else if (key == ' ') {
-    Solid entrance = render.rc.world.whatsThere(2, 1);
+    Solid entrance = render.rc.lookingAt(); //render.rc.world.whatsThere(2, 1);
     if(entrance != null && entrance instanceof Door) ((Door)entrance).toggle();
   }
 }
