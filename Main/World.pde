@@ -90,6 +90,7 @@ public class SaveFile {
   int worldWidth, worldHeight;
   float playerX, playerY;
   color sky, ground;
+  ArrayList<Solid> terrain;
   
   SaveFile(File file) {
     try {parse(new Scanner(file));}
@@ -106,6 +107,7 @@ public class SaveFile {
       print(data[i] + " ");
     }
     println();
+    terrain = new ArrayList<Solid>();
     if(data.length > 3 && data[0] == '=' && data[1] == '=' && data[2] == '=') {
       println("Version 3 Save File");
       parse3(data);
@@ -149,19 +151,35 @@ public class SaveFile {
   private void parse3(int[] data) {
     int START_SECTION = 29;
     int state = 0; //0: transition, 1: metadata, 2: transition, 3: world data
+    int x = 1, y = 1;
+    Texture[] textures = {
+      new OneColor(color(0, 128, 0))
+    };
     for(int i = 3; i < data.length; i++) {
       switch(state) {
         case 0:
           if(data[i] == START_SECTION) state = 1;
           break;
         case 1:
-          worldWidth = getNumber(data, i, 0) + 1;
-          worldHeight = getNumber(data, i+1, 0) + 1;
+          worldWidth = getNumber(data, i, 1) + 1;
+          worldHeight = getNumber(data, i+1, 1) + 1;
           playerX = getNumber(data, i+2, 0);
           playerY = getNumber(data, i+3, 0);
-          i += 4;
+          i += 3;
           state = 2;
           break;
+        case 2:
+          if(data[i] == START_SECTION) state = 3;
+          break;
+        case 3:
+          if(data[i] >= 32) { //ignore control characters and newlines
+            if((char)data[i] == 'g') {
+              terrain.add(new Solid(x, y, 3, textures[0]));
+            }
+            x++;
+            if(x >= worldWidth) {x = 1; y++;}
+          }
+         break;
       }
     }
     println(worldWidth, worldHeight, playerX, playerY);
