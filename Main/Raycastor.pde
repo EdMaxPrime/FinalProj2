@@ -18,6 +18,13 @@ public class RayCastor {
     renderDistance = 10;
   }
   
+  public RayCastor(Camera c, World w) {
+    camera = c;
+    world = w;
+    stripes = new PImage[camera.resolution];
+    renderDistance = 10;
+  }
+  
   public void camX(){
     
   }
