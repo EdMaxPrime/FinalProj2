@@ -1,32 +1,43 @@
 public class Player {
-  int xpos;
-  int ypos;
   Camera cam;
-  //ArrayList<Solid> solid;
-  float speed;
+  float walkingSpeed;
+  float turningSpeed;
 
   public Player(Renderer r) {
     cam = r.rc.camera;
-    //solid = r.rc.solids;
-    speed = 0.1;
+    walkingSpeed = 0.1;
+    turningSpeed = (PI / 90);
   }
 
   public void forward() {
-    cam.xpos += cam.direction.x * speed;
-    cam.ypos += cam.direction.y * speed;
+    cam.xpos += cam.direction.x * walkingSpeed;
+    cam.ypos += cam.direction.y * walkingSpeed;
     //println(cam.xpos, cam.ypos);
   }
 
   public void backward() {
-    cam.xpos -= cam.direction.x * speed;
-    cam.ypos -= cam.direction.y * speed;
+    cam.xpos -= cam.direction.x * walkingSpeed;
+    cam.ypos -= cam.direction.y * walkingSpeed;
     //println(cam.xpos, cam.ypos);
   }
 
   /** -1 to turn left, +1 to turn right */
   public void turn(int dir) {
-    if (dir == -1) cam.rotate(- PI/90);
-    if (dir ==  1) cam.rotate(+ PI/90);
+    if (dir == -1) cam.rotate(- turningSpeed);
+    if (dir ==  1) cam.rotate(+ turningSpeed);
+  }
+  
+  /** Moves the player to the specified coordinates */
+  public void moveto(float x, float y) {
+    cam.xpos = x;
+    cam.ypos = y;
+  }
+  
+  /** Forces the player to face a certain direction. Angle provided should be in radians */
+  public void face(float angle) {
+    float currentAngle = cam.direction.heading();
+    float deltaAngle = angle - currentAngle;
+    cam.rotate(deltaAngle);
   }
 
   //public boolean closeEnough(float x, float x1) {
