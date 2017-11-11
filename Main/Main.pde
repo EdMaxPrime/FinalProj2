@@ -18,13 +18,14 @@ void setup() {
   drawGrid(40);
   drawRay(40, r2);
   println(r2.perpWallDist());*/
-  RayCastor rc = new RayCastor(new Camera(0, 0, -radians(45), 100));
+  RayCastor rc = new RayCastor(new Camera(0, 0, radians(45), 100));
   render = new Renderer(rc);
   p = new Player(render);
-  p.face(QUARTER_PI);
   //SaveFile sf = new SaveFile(join(loadStrings("data/world2.txt"), "\n"));
   //println("-------");
   SaveFile w2 = new SaveFile(loadBytes("data/world3.dat"));
+  render = w2.load();
+  p = new Player(render);
 }
 
 void draw() {
