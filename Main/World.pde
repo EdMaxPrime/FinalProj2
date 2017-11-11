@@ -150,7 +150,7 @@ public class SaveFile {
   
   private void parse3(int[] data) {
     int START_SECTION = 29;
-    int state = 0; //0: transition, 1: metadata, 2: transition, 3: world data
+    int state = 0; //0: transition, 1: metadata, 2: transition, 3: sky colors, 4: transition, 5: world data
     int x = 1, y = 1;
     Texture[] textures = {
       new OneColor(color(0, 128, 0))
@@ -172,6 +172,13 @@ public class SaveFile {
           if(data[i] == START_SECTION) state = 3;
           break;
         case 3:
+          state = 4;
+          i--;
+          break;
+        case 4:
+          if(data[i] == START_SECTION) state = 5;
+          break;
+        case 5:
           if(data[i] >= 32 && y < worldHeight) { //ignore control characters/newlines AND stay within the bounds of world
             if((char)data[i] == 'g') {
               terrain.add(new Solid(x, y, 3, textures[0]));
@@ -255,7 +262,8 @@ public class SaveFile {
     //return Integer.parseInt(Default, 16);
   }
   
-  World loadWorld() {
+  /** Returns the World object with the solids in it */
+  public World loadWorld() {
     try {
       return new World(terrain, worldWidth, worldHeight);
     } catch(IllegalArgumentException e) {
@@ -267,7 +275,7 @@ public class SaveFile {
   /** Returns a Renderer object containing all the necessary components. The world will be
       as it was specified in the save file. The Player's start coordinates will be configured
       too. Default resolution is 100 and Player will be facing the world at 45deg */
-  Renderer load() {
+  public Renderer load() {
     Camera camera = new Camera(playerX, playerY, radians(45), 100);
     World world = loadWorld();
     RayCastor raycastor = new RayCastor(camera, world);
