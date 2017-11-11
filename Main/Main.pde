@@ -24,9 +24,9 @@ void setup() {
   rc.beginCasting();
   render = new Renderer(rc);
   p = new Player(render);
-  SaveFile sf = new SaveFile(join(loadStrings("data/world2.txt"), "\n"));
-  println("-------");
-  SaveFile w2 = new SaveFile(loadBytes("data/world2.txt"));
+  //SaveFile sf = new SaveFile(join(loadStrings("data/world2.txt"), "\n"));
+  //println("-------");
+  SaveFile w2 = new SaveFile(loadBytes("data/world3.dat"));
 }
 
 void draw() {
