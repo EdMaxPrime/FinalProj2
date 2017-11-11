@@ -1,5 +1,4 @@
 Camera cam;
-RayCastor rc;
 Renderer render;
 Player p;
 
@@ -19,34 +18,20 @@ void setup() {
   drawGrid(40);
   drawRay(40, r2);
   println(r2.perpWallDist());*/
-  rc = new RayCastor(new Camera(0, 0, -radians(45), 100));
-  rc.camera.rotate(HALF_PI);
-  rc.beginCasting();
+  RayCastor rc = new RayCastor(new Camera(0, 0, -radians(45), 100));
   render = new Renderer(rc);
   p = new Player(render);
+  p.face(QUARTER_PI);
   //SaveFile sf = new SaveFile(join(loadStrings("data/world2.txt"), "\n"));
   //println("-------");
   SaveFile w2 = new SaveFile(loadBytes("data/world3.dat"));
 }
 
 void draw() {
-  //background(0,0,0);
-  //PImage[] buffer = rc.getBuffer();
-  //imageMode(CENTER);
-  //for(int i = 0; i < buffer.length; i++) {
-  //  for(int j = 0; j < height/buffer.length; j++) {
-  //    image(buffer[i], i*(height/buffer.length)+j, height/2);
-  //  }
-  //}
+  render.update();
   render.render();
-  //if(frameCount % 720 < 360) { //number of times draw has been called
-  //  rc.camera.rotate(- PI/720);
-  //} else {
-  //  rc.camera.rotate(+ PI/720);
-  //}
-  rc.beginCasting();
 }
-//
+
 void drawGrid(float scale) {
   background(0);
   stroke(255, 0, 0);
@@ -94,7 +79,6 @@ void keyReleased() {
      println("left");
   }
   else if (key == ' ') {
-  //  ((Door)render.rc.world.whatsThere(2, 1)).toggle();
     Solid entrance = render.rc.world.whatsThere(2, 1);
     if(entrance != null && entrance instanceof Door) ((Door)entrance).toggle();
   }
