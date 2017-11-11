@@ -102,8 +102,13 @@ public class SaveFile {
     if(bytes == null) bytes = new byte[0];
     int[] data = new int[bytes.length];
     for(int i = 0; i < bytes.length; i++) {
-      data[i] = bytes[i] & 0xff;
+      data[i] = bytes[i] & 0xff; //convert from -128:127 to 0:255
       print(data[i] + " ");
+    }
+    println();
+    if(data.length > 3 && data[0] == '=' && data[1] == '=' && data[2] == '=') {
+      println("Version 3 Save File");
+      parse3(data);
     }
   }
   
@@ -139,6 +144,27 @@ public class SaveFile {
     }
     in.close();
     println("end of file");
+  }
+  
+  private void parse3(int[] data) {
+    int START_SECTION = 29;
+    int state = 0; //0: transition, 1: metadata, 2: transition, 3: world data
+    for(int i = 3; i < data.length; i++) {
+      switch(state) {
+        case 0:
+          if(data[i] == START_SECTION) state = 1;
+          break;
+        case 1:
+          worldWidth = getNumber(data, i, 0) + 1;
+          worldHeight = getNumber(data, i+1, 0) + 1;
+          playerX = getNumber(data, i+2, 0);
+          playerY = getNumber(data, i+3, 0);
+          i += 4;
+          state = 2;
+          break;
+      }
+    }
+    println(worldWidth, worldHeight, playerX, playerY);
   }
   
   /** Returns what the parameter "thing" is representing.
@@ -180,6 +206,11 @@ public class SaveFile {
       try {return (float)Double.parseDouble(array[index]);}
       catch(Exception e) {return Default;}
     }
+    return Default;
+  }
+  public int getNumber(int[] array, int index, int Default) {
+    if(index < array.length)
+      return array[index];
     return Default;
   }
   public float getCoordinate(String[] array, int index, float Default) {
