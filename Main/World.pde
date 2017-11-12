@@ -89,6 +89,7 @@ public class World {
 public class SaveFile {
   int worldWidth, worldHeight;
   float playerX, playerY;
+  float playerAngle;
   color sky, ground;
   ArrayList<Solid> terrain;
   
@@ -153,11 +154,13 @@ public class SaveFile {
     int state = 0; //0: transition, 1: metadata, 2: transition, 3: sky colors, 4: transition, 5: world data
     int x = 1, y = 1;
     Texture[] textures = {
-      new OneColor(color(64, 64, 0)),
+      new OneColor(color(100, 50, 10)),
       new ImageTexture(loadImage("data/bookshelf.png")),
       new OneColor(color(130, 15, 90)),
       new OneColor(color(90, 50, 130)),
-      new ImageTexture(loadImage("data/bricks.png"))
+      new ImageTexture(loadImage("data/bricks.png")),
+      new OneColor(color(185, 20, 20)),
+      new OneColor(color(150, 150, 50))
     };
     for(int i = 3; i < data.length; i++) {
       switch(state) {
@@ -169,7 +172,8 @@ public class SaveFile {
           worldHeight = getNumber(data, i+1, 1) + 1;
           playerX = getNumber(data, i+2, 0);
           playerY = getNumber(data, i+3, 0);
-          i += 3;
+          playerAngle = (getNumber(data, i+4, 0) % 24) * PI / 12;
+          i += 4;
           state = 2;
           break;
         case 2:
@@ -189,6 +193,8 @@ public class SaveFile {
             else if((char)data[i] == 'p') { terrain.add(new Solid(x, y, 3, textures[2])); }
             else if((char)data[i] == 'b') { terrain.add(new Solid(x, y, 3, textures[3])); }
             else if((char)data[i] == '#') { terrain.add(new Solid(x, y, 3, textures[4])); }
+            else if((char)data[i] == 'r') { terrain.add(new Solid(x, y, 3, textures[5])); }
+            else if((char)data[i] == 'o') { terrain.add(new Solid(x, y, 3, textures[6])); }
             x++;
             if(x >= worldWidth) {x = 1; y++;}
           }
@@ -279,12 +285,13 @@ public class SaveFile {
   }
   
   /** Returns a Renderer object containing all the necessary components. The world will be
-      as it was specified in the save file. The Player's start coordinates will be configured
-      too. Default resolution is 100 and Player will be facing the world at 45deg */
+      as it was specified in the save file. The Player's start coordinates and direction
+      will be configured too. Default resolution is 100. */
   public Renderer load() {
-    Camera camera = new Camera(playerX, playerY, radians(45), 100);
+    Camera camera = new Camera(playerX, playerY, playerAngle, 100);
     World world = loadWorld();
     RayCastor raycastor = new RayCastor(camera, world);
+    raycastor.setRenderDistance(max(10, worldWidth, worldHeight));
     Renderer renderer = new Renderer(raycastor);
     return renderer;
   }
