@@ -92,6 +92,11 @@ void keyReleased() {
     Solid entrance = render.rc.lookingAt(); //render.rc.world.whatsThere(2, 1);
     if(entrance != null && entrance instanceof Door) ((Door)entrance).toggle();
   }
+  else if(key >= '0' && key <= '9') {
+    SaveFile sf = new SaveFile(loadBytes("data/world" + key + ".dat"));
+    render = sf.load();
+    p = new Player(render);
+  }
 }
 
 void keyPressed() {
