@@ -40,5 +40,15 @@ public class Renderer{
     return rc.camera.resolution;
   }
   
+  public int getRenderDistance() { return rc.getRenderDistance(); }
+  
+  public void adjustRenderDistance(int change) {
+    rc.setRenderDistance(rc.getRenderDistance() + change);
+  }
+  
+  public void adjustResolution(int change) {
+    rc.camera.setResolution(rc.camera.getResolution() + change);
+  }
+  
   
 }

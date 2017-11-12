@@ -38,7 +38,7 @@ public class RayCastor {
       Ray r = camera.nextRay();
       for (int i = 0; i < renderDistance; i ++) {
         //this is the cone thing
-        //if(world.whatsThere(r.getMapX(), r.getMapY()) != 0) {
+        //if(world.whatsThere(r.getMapX(), r.getMapY()) != null) {
         //  //println("Detected @(" + r.getMapX() + ", " + r.getMapY() + ") " + r.perpWallDist());
         //  PVector end = r.vector.copy();
         //  end.setMag((float)r.perpWallDist()); //looks like fish-eye
@@ -83,7 +83,7 @@ public class RayCastor {
   }
 
   void setRenderDistance(int d) {
-    renderDistance = d;
+    if(d > 1 && d < 100) renderDistance = d;
   }
   int getRenderDistance() {
     return renderDistance;

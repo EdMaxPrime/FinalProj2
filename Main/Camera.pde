@@ -45,7 +45,7 @@ public class Camera{
   }
 
   public void setResolution(int res){
-    resolution = res;
+    if(res > 1 && res < width) resolution = res;
   }
   
   public int getResolution() {

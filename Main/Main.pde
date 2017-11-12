@@ -31,6 +31,11 @@ void setup() {
 void draw() {
   render.update();
   render.render();
+  fill(0);
+  rect(0, height-20, width, height);
+  fill(255);
+  textAlign(CENTER);
+  text("render-distance: " + render.getRenderDistance() + "\t\tresolution: " + render.getResolution(), width/2, height-2);
 }
 
 void drawGrid(float scale) {
@@ -78,6 +83,10 @@ void keyReleased() {
       println("right");
   } else if (keyCode == LEFT) {
      println("left");
+  } else if(key == '.') {
+    render.adjustRenderDistance(1);
+  } else if(key == ',') {
+    render.adjustRenderDistance(-1);
   }
   else if (key == ' ') {
     Solid entrance = render.rc.lookingAt(); //render.rc.world.whatsThere(2, 1);
