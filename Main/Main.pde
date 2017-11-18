@@ -1,9 +1,11 @@
 Camera cam;
 Renderer render;
 Player p;
+String state;
 
 void setup() {
   size(500, 500);
+  state = "world";
   /*Ray r = new Ray(0, 0, -.5, 1);
   println(r);
   r.grow();
@@ -29,13 +31,27 @@ void setup() {
 }
 
 void draw() {
-  render.update();
-  render.render();
+  if(state.startsWith("world")) {
+    render.update();
+    render.render();
+  }
+  else if(state.equals("map")) {
+    background(0);
+    int side = width / render.getRenderDistance();
+    render.drawMap(side);
+    fill(255, 0, 0);
+    ellipseMode(CENTER);
+    ellipse(p.getX() * side, p.getY() * side, side, side);
+    stroke(255, 255, 255);
+    float a = p.getAngle();
+    line(p.getX() * side, p.getY() * side, p.getX() * side + cos(a) * side, p.getY() * side + sin(a) * side);
+    noStroke();
+  }
   fill(0);
   rect(0, height-20, width, height);
   fill(255);
   textAlign(CENTER);
-  text("render-distance: " + render.getRenderDistance() + "\t\tresolution: " + render.getResolution(), width/2, height-2);
+  text("render-distance: " + render.getRenderDistance() + "    resolution: " + render.getResolution() + "    <" + state + ">", width/2, height-2);
 }
 
 void drawGrid(float scale) {
@@ -96,6 +112,10 @@ void keyReleased() {
     SaveFile sf = new SaveFile(loadBytes("data/world" + key + ".dat"));
     render = sf.load();
     p = new Player(render);
+  }
+  else if(key == 'm') {
+    if(state.equals("world")) state = "map";
+    else state = "world";
   }
 }
 

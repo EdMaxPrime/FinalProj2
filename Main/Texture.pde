@@ -9,6 +9,8 @@ abstract class Texture {
   abstract Texture darker();
   /** Returns a copy */
   abstract Texture copy();
+  /** Draws a small 2d representation of the texture */
+  abstract void preview(int x, int y, int s);
   /** Utility to change the transparency of a color */
   protected color changeAlpha(color c, int a) {
     return color(red(c), green(c), blue(c), a);
@@ -35,6 +37,12 @@ public class OneColor extends Texture {
     }
     img.updatePixels();
     return img;
+  }
+  
+  public void preview(int x, int y, int s) {
+    rectMode(CORNER);
+    fill(mycolor);
+    rect(x, y, s, s);
   }
 
   public OneColor darker() {
@@ -133,6 +141,10 @@ class ImageTexture extends Texture {
     dark.updatePixels();
     colorMode(RGB);
   }
+  public void preview(int x, int y, int s) {
+    imageMode(CORNER);
+    image(img, x, y, s, s);
+  }
   public Texture darker() {
     PImage temp = img;
     img = dark;
@@ -171,6 +183,13 @@ public class Beacon extends Texture {
     }
     stripe.updatePixels();
     return stripe;
+  }
+  
+  public void preview(int x, int y, int s) {
+    stroke(light);
+    strokeWeight(2);
+    side.preview(x, y, s);
+    strokeWeight(1);
   }
   
   Texture darker() {

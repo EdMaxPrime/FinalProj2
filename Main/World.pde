@@ -84,6 +84,12 @@ public class World {
     }
     return ans + "]";
   }
+  
+  public int getWidth() {
+    if(getHeight() > 0) return world[0].length;
+    return 0;
+  }
+  public int getHeight() {return world.length;}
 }
 
 public class SaveFile {

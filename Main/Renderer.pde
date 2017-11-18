@@ -56,5 +56,17 @@ public class Renderer{
     rc.camera.setResolution(rc.camera.getResolution() + change);
   }
   
+  public void drawMap(int side) {
+    int w = rc.world.getWidth(), h = rc.world.getHeight();
+    for(int x = 0; x < w; x++) {
+      for(int y = 0; y < h; y++) {
+        Solid s = rc.world.whatsThere(x, y);
+        if(s != null) {
+          s.texture.preview(x * side, y * side, side);
+        }
+      }
+    }
+  }
+  
   
 }

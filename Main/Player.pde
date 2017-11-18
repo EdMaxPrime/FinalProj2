@@ -39,6 +39,10 @@ public class Player {
     float deltaAngle = angle - currentAngle;
     cam.rotate(deltaAngle);
   }
+  
+  public float getX() {return cam.xpos;}
+  public float getY() {return cam.ypos;}
+  public float getAngle() {return cam.direction.heading();}
 
   //public boolean closeEnough(float x, float x1) {
   //  if (abs(1 - ((float)x) / x1) < 0.1) {
