@@ -119,13 +119,13 @@ public class SaveFile {
     println();
     terrain = new ArrayList<Solid>();
     textures = new Texture[] {
-      new OneColor(color(100, 50, 10)),
+      new OneColor(color(100, 50, 10)), //green
       new ImageTexture(loadImage("data/bookshelf.png")),
-      new OneColor(color(130, 15, 90)),
-      new OneColor(color(90, 50, 130)),
+      new OneColor(color(130, 15, 90)), //purple
+      new OneColor(color(90, 50, 130)), //dark blue
       new ImageTexture(loadImage("data/bricks.png")),
-      new OneColor(color(185, 20, 20)),
-      new OneColor(color(150, 150, 50))
+      new OneColor(color(185, 20, 20)), //red
+      new OneColor(color(255, 150, 00)) //orange
     };
     sky = #82CAFF;
     ground = #764D0D;
