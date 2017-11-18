@@ -92,6 +92,9 @@ public class SaveFile {
   float playerAngle;
   color sky, ground;
   ArrayList<Solid> terrain;
+  static final int START_SECTION = 29;
+  static final int DOOR = 1;
+  Texture[] textures;
   
   SaveFile(File file) {
     try {parse(new Scanner(file));}
@@ -109,6 +112,15 @@ public class SaveFile {
     }
     println();
     terrain = new ArrayList<Solid>();
+    textures = new Texture[] {
+      new OneColor(color(100, 50, 10)),
+      new ImageTexture(loadImage("data/bookshelf.png")),
+      new OneColor(color(130, 15, 90)),
+      new OneColor(color(90, 50, 130)),
+      new ImageTexture(loadImage("data/bricks.png")),
+      new OneColor(color(185, 20, 20)),
+      new OneColor(color(150, 150, 50))
+    };
     if(data.length > 3 && data[0] == '=' && data[1] == '=' && data[2] == '=') {
       println("Version 3 Save File");
       parse3(data);
@@ -150,18 +162,9 @@ public class SaveFile {
   }
   
   private void parse3(int[] data) {
-    int START_SECTION = 29;
     int state = 0; //0: transition, 1: metadata, 2: transition, 3: sky colors, 4: transition, 5: world data
     int x = 1, y = 1;
-    Texture[] textures = {
-      new OneColor(color(100, 50, 10)),
-      new ImageTexture(loadImage("data/bookshelf.png")),
-      new OneColor(color(130, 15, 90)),
-      new OneColor(color(90, 50, 130)),
-      new ImageTexture(loadImage("data/bricks.png")),
-      new OneColor(color(185, 20, 20)),
-      new OneColor(color(150, 150, 50))
-    };
+    boolean thisIsADoor = false;
     for(int i = 3; i < data.length; i++) {
       switch(state) {
         case 0:
@@ -187,21 +190,44 @@ public class SaveFile {
           if(data[i] == START_SECTION) state = 5;
           break;
         case 5:
-          if(data[i] >= 32 && y < worldHeight) { //ignore control characters/newlines AND stay within the bounds of world
-            if((char)data[i] == 'g') { terrain.add(new Solid(x, y, 3, textures[0])); }
-            else if((char)data[i] == 'd') { terrain.add(new Door(x, y, 3, textures[1])); }
-            else if((char)data[i] == 'p') { terrain.add(new Solid(x, y, 3, textures[2])); }
-            else if((char)data[i] == 'b') { terrain.add(new Solid(x, y, 3, textures[3])); }
-            else if((char)data[i] == '#') { terrain.add(new Solid(x, y, 3, textures[4])); }
-            else if((char)data[i] == 'r') { terrain.add(new Solid(x, y, 3, textures[5])); }
-            else if((char)data[i] == 'o') { terrain.add(new Solid(x, y, 3, textures[6])); }
-            x++;
-            if(x >= worldWidth) {x = 1; y++;}
+          if(y < worldHeight) { //stay within the bounds of world
+            if(data[i] >= 32) { //excludes control characters and newlines
+              if(data[i] > 32) { //not a space character, so it is a solid
+                if(thisIsADoor) { terrain.add(new Door(x, y, 3, decodeTexture((char)data[i]))); thisIsADoor = false; }
+                else { terrain.add(new Solid(x, y, 3, decodeTexture((char)data[i]))); }
+              }
+              x++;
+              if(x >= worldWidth) {x = 1; y++;}
+            } else {
+              if(data[i] == DOOR) {
+                thisIsADoor = true;
+              }
+            }
           }
          break;
       }
     }
     println(worldWidth, worldHeight, playerX, playerY);
+  }
+  
+  public char encodeTexture(Solid s) {
+    char[] chars = {'g', 'd', 'p', 'b', '#', 'r', 'o'};
+    for(int i = 0; i < textures.length && s != null; i++) {
+      if(s.texture == textures[i]) {
+        return chars[i];
+      }
+    }
+    return ' ';
+  }
+  public Texture decodeTexture(char c) {
+    if(c == 'g') { return textures[0]; }
+    else if(c == 'd') { return textures[1]; }
+    else if(c == 'p') { return textures[2]; }
+    else if(c == 'b') { return textures[3]; }
+    else if(c == '#') { return textures[4]; }
+    else if(c == 'r') { return textures[5]; }
+    else if(c == 'o') { return textures[6]; }
+    return textures[0];
   }
   
   /** Returns what the parameter "thing" is representing.
@@ -272,6 +298,31 @@ public class SaveFile {
     }
     return 0;
     //return Integer.parseInt(Default, 16);
+  }
+  
+  /** Returns an array of bytes representing this SaveFile. This can be used to
+      clone a save file or make a custom one. Note that if this SaveFile originated
+      from a file on disk, no extraneous characters or formatting will be preserved.*/
+  public byte[] toBytes() {
+    ArrayList<Integer> file = new ArrayList<Integer>();
+    file.add((int)'='); //=== header specifies version as 3
+    file.add((int)'=');
+    file.add((int)'=');
+    file.add((int)'\n');
+    file.add(START_SECTION); //begin world metadata
+    file.add(worldWidth);
+    file.add(worldHeight);
+    file.add(round(playerX));
+    file.add(round(playerY));
+    file.add((int)(degrees(playerAngle)) / 15); //brings it to the range of [0, 24]
+    file.add(START_SECTION); //begin sky colors
+    file.add(START_SECTION); //begin world contents
+    World world = loadWorld();
+    byte[] b = new byte[file.size()];
+    for(int i = 0; i < b.length; i++) {
+      b[i] = (byte)(file.get(i) - Byte.MIN_VALUE);
+    }
+    return b;
   }
   
   /** Returns the World object with the solids in it */
