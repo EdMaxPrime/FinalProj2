@@ -121,6 +121,8 @@ public class SaveFile {
       new OneColor(color(185, 20, 20)),
       new OneColor(color(150, 150, 50))
     };
+    sky = #82CAFF;
+    ground = #764D0D;
     if(data.length > 3 && data[0] == '=' && data[1] == '=' && data[2] == '=') {
       println("Version 3 Save File");
       parse3(data);
@@ -183,8 +185,11 @@ public class SaveFile {
           if(data[i] == START_SECTION) state = 3;
           break;
         case 3:
+          if(data[i] == 0) {
+            sky = color(0);
+            ground = color(0);
+          }
           state = 4;
-          i--;
           break;
         case 4:
           if(data[i] == START_SECTION) state = 5;
@@ -342,8 +347,8 @@ public class SaveFile {
     Camera camera = new Camera(playerX, playerY, playerAngle, 100);
     World world = loadWorld();
     RayCastor raycastor = new RayCastor(camera, world);
-    raycastor.setRenderDistance(max(10, worldWidth, worldHeight));
-    Renderer renderer = new Renderer(raycastor);
+    raycastor.setRenderDistance(round(sqrt(pow(worldWidth, 2) + pow(worldHeight, 2))));
+    Renderer renderer = new Renderer(raycastor, sky, ground);
     return renderer;
   }
 }
