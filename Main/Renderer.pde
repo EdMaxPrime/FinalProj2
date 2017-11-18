@@ -8,6 +8,12 @@ public class Renderer{
     sky = #82CAFF;
   }
   
+  public Renderer(RayCastor r, color _sky, color _ground) {
+    rc = r;
+    sky = _sky;
+    ground = _ground;
+  }
+  
   public void render(){
     background(ground);
     fill(sky);
