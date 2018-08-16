@@ -45,7 +45,11 @@ public class Camera{
   }
 
   public void setResolution(int res){
-    resolution = res;
+    if(res > 1 && res < width) resolution = res;
+  }
+  
+  public int getResolution() {
+    return resolution;
   }
 
   public Ray nextRay(){
@@ -54,6 +58,14 @@ public class Camera{
     cameraPlane.setMag(planeLength);
     Ray ray = new Ray(xpos, ypos, xpos + direction.x + cameraPlane.x * cameraPlaneX, ypos + direction.y + cameraPlane.y * cameraPlaneX);
     current++;
+    return ray;
+  }
+  
+  public Ray centerRay() {
+    float cameraPlaneX = 0; //0 is the middle, halfway between -1 and 1 on the cameraPlane
+    PVector cameraPlane = direction.copy().rotate(HALF_PI); //perpendicular to direction vector
+    cameraPlane.setMag(planeLength);
+    Ray ray = new Ray(xpos, ypos, xpos + direction.x + cameraPlane.x * cameraPlaneX, ypos + direction.y + cameraPlane.y * cameraPlaneX);
     return ray;
   }
 

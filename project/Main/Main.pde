@@ -1,10 +1,11 @@
 Camera cam;
-RayCastor rc;
 Renderer render;
 Player p;
+String state;
 
 void setup() {
   size(500, 500);
+  state = "world";
   /*Ray r = new Ray(0, 0, -.5, 1);
   println(r);
   r.grow();
@@ -19,31 +20,40 @@ void setup() {
   drawGrid(40);
   drawRay(40, r2);
   println(r2.perpWallDist());*/
-  rc = new RayCastor(new Camera(0, 0, -radians(45), 100));
-  rc.camera.rotate(HALF_PI);
-  rc.beginCasting();
+  RayCastor rc = new RayCastor(new Camera(0, 0, radians(45), 100));
   render = new Renderer(rc);
+  p = new Player(render);
+  //SaveFile sf = new SaveFile(join(loadStrings("data/world2.txt"), "\n"));
+  //println("-------");
+  SaveFile w2 = new SaveFile(loadBytes("data/world3.dat"));
+  render = w2.load();
   p = new Player(render);
 }
 
 void draw() {
-  //background(0,0,0);
-  //PImage[] buffer = rc.getBuffer();
-  //imageMode(CENTER);
-  //for(int i = 0; i < buffer.length; i++) {
-  //  for(int j = 0; j < height/buffer.length; j++) {
-  //    image(buffer[i], i*(height/buffer.length)+j, height/2);
-  //  }
-  //}
-  render.render();
-  //if(frameCount % 720 < 360) { //number of times draw has been called
-  //  rc.camera.rotate(- PI/720);
-  //} else {
-  //  rc.camera.rotate(+ PI/720);
-  //}
-  rc.beginCasting();
+  if(state.startsWith("world")) {
+    render.update();
+    render.render();
+  }
+  else if(state.equals("map")) {
+    background(0);
+    int side = width / render.getRenderDistance();
+    render.drawMap(side);
+    fill(255, 0, 0);
+    ellipseMode(CENTER);
+    ellipse(p.getX() * side, p.getY() * side, side, side);
+    stroke(255, 255, 255);
+    float a = p.getAngle();
+    line(p.getX() * side, p.getY() * side, p.getX() * side + cos(a) * side, p.getY() * side + sin(a) * side);
+    noStroke();
+  }
+  fill(0);
+  rect(0, height-20, width, height);
+  fill(255);
+  textAlign(CENTER);
+  text("render-distance: " + render.getRenderDistance() + "    resolution: " + render.getResolution() + "    <" + state + ">", width/2, height-2);
 }
-//
+
 void drawGrid(float scale) {
   background(0);
   stroke(255, 0, 0);
@@ -89,11 +99,23 @@ void keyReleased() {
       println("right");
   } else if (keyCode == LEFT) {
      println("left");
+  } else if(key == '.') {
+    render.adjustRenderDistance(1);
+  } else if(key == ',') {
+    render.adjustRenderDistance(-1);
   }
   else if (key == ' ') {
-  //  ((Door)render.rc.world.whatsThere(2, 1)).toggle();
-    Solid entrance = render.rc.world.whatsThere(2, 1);
+    Solid entrance = render.rc.lookingAt(); //render.rc.world.whatsThere(2, 1);
     if(entrance != null && entrance instanceof Door) ((Door)entrance).toggle();
+  }
+  else if(key >= '0' && key <= '9') {
+    SaveFile sf = new SaveFile(loadBytes("data/world" + key + ".dat"));
+    render = sf.load();
+    p = new Player(render);
+  }
+  else if(key == 'm') {
+    if(state.equals("world")) state = "map";
+    else state = "world";
   }
 }
 

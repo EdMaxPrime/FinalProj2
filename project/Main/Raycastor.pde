@@ -18,6 +18,13 @@ public class RayCastor {
     renderDistance = 10;
   }
   
+  public RayCastor(Camera c, World w) {
+    camera = c;
+    world = w;
+    stripes = new PImage[camera.resolution];
+    renderDistance = 10;
+  }
+  
   public void camX(){
     
   }
@@ -31,7 +38,7 @@ public class RayCastor {
       Ray r = camera.nextRay();
       for (int i = 0; i < renderDistance; i ++) {
         //this is the cone thing
-        //if(world.whatsThere(r.getMapX(), r.getMapY()) != 0) {
+        //if(world.whatsThere(r.getMapX(), r.getMapY()) != null) {
         //  //println("Detected @(" + r.getMapX() + ", " + r.getMapY() + ") " + r.perpWallDist());
         //  PVector end = r.vector.copy();
         //  end.setMag((float)r.perpWallDist()); //looks like fish-eye
@@ -59,13 +66,24 @@ public class RayCastor {
       rayNumber++;
     }
   }
+  
+  public Solid lookingAt() {
+    Ray r = camera.centerRay();
+    Solid s = null;
+    for(int i = 0; i < renderDistance; i++) {
+      s = world.whatsThere(r.getMapX(), r.getMapY());
+      if(s == null) r.grow(); //nothing there
+      else break; //hit something
+    }
+    return s;
+  }
 
   public PImage[] getBuffer() {
     return stripes;
   }
 
   void setRenderDistance(int d) {
-    renderDistance = d;
+    if(d > 1 && d < 100) renderDistance = d;
   }
   int getRenderDistance() {
     return renderDistance;
